@@ -1,0 +1,147 @@
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+
+<view style='padding-top:{{head_size}};padding-bottom: {{foot_height}};'>
+  <view style='width:100%;text-align:center'>
+    <text style='font-size:25px'>任务详情</text>
+  </view>
+  <view class="page__bd page__bd_spacing">
+    <view class='kuang_1' style='background-color:#FFFFFF'>
+      <view class="weui-form-preview__hd">
+          <view class="weui-form-preview__item">
+            <view class="weui-form-preview__label">运单详情</view>
+          </view>
+        </view>
+        <view class="weui-form-preview__bd">
+          <view wx:for="{{wayBillAccept}}" wx:key="{{item.key}}" class="weui-form-preview__item">
+            <view wx:if="{{item.key=='合同单号'}}">
+              <view class="weui-form-preview__label">{{item.key}}</view>
+              <view class="weui-form-preview__value" style='color:#0bb20c' bindtap='showContractModalResp'>{{item.value}}</view>
+            </view>
+            <view wx:else>
+              <view class="weui-form-preview__label">{{item.key}}</view>
+              <view class="weui-form-preview__value">{{item.value}}</view>
+            </view>
+          </view>
+        </view>
+    </view>
+  </view>
+
+  <view class="page__bd page__bd_spacing">
+    <view class='kuang_1' style='background-color:#FFFFFF'>
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">装货磅单</view>
+          <view class="weui-form-preview__value_in-hd">
+            <i-icon type="picture" size="30" color="#0bb20c" data-type='load' bindtap='showPictureModal'></i-icon>
+          </view>
+        </view>
+      </view>
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">装货吨位</view>
+          <view class="weui-form-preview__value">{{picLoadPound}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">装货时间</view>
+          <view class="weui-form-preview__value">{{picLoadDate}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page__bd page__bd_spacing">
+    <view class='kuang_1' style='background-color:#FFFFFF'>
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">卸货磅单</view>
+          <view class="weui-form-preview__value_in-hd">
+            <i-icon type="picture" size="30" color="#0bb20c" data-type='unload' bindtap='showPictureModal'></i-icon>
+          </view>
+        </view>
+      </view>
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">卸货吨位</view>
+          <view class="weui-form-preview__value">{{picUnloadPound}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">卸货时间</view>
+          <view class="weui-form-preview__value">{{picUnloadDate}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page__bd page__bd_spacing">
+    <view class='kuang_1' style='background-color:#FFFFFF'>
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">装货视频</view>
+        </view>
+      </view>
+      <view wx:if="{{oldLoadVideoFilePath.length>0}}" class="weui-form-preview__bd">
+        <view class="weui-form-preview__item" wx:for="{{oldLoadVideoFilePath}}" wx:key="{{item.key}}">
+          <view class="weui-form-preview__label" style='color:#0bb20c' data-key='{{item.key}}' data-title='{{item.name}}' data-src='{{item.src}}' bindtap='playVideo'>{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page__bd page__bd_spacing">
+    <view class='kuang_1' style='background-color:#FFFFFF'>
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">卸货视频</view>
+        </view>
+      </view>
+      <view wx:if="{{oldUnloadVideoFilePath.length>0}}" class="weui-form-preview__bd">
+        <view class="weui-form-preview__item" wx:for="{{oldUnloadVideoFilePath}}" wx:key="{{item.key}}">
+          <view class="weui-form-preview__label" style='color:#0bb20c' data-key='{{item.key}}' data-title='{{item.name}}' data-src='{{item.src}}' bindtap='playVideo'>{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page__bd page__bd_spacing">
+    <button class="weui-btn" type="primary" bindtap='callBackToList'>返回</button>
+  </view>
+</view>
+
+<view class="foot" style='height:{{foot_height}}'>
+  <i-tab-bar current="{{ current }}" color="#2d8cf0" bindchange="handleChange">
+    <i-tab-bar-item key="document" icon="document" current-icon="document_fill" title="任务"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_1" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_2" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="mine" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
+  </i-tab-bar>
+</view>
+
+<i-modal title="合同" visible="{{ contract_resp }}" width="{{modal_width}}" height="{{modal_height}}" actions="{{ actions_resp  }}" bind:click="handleCloseResp">
+  <view class="page__bd page__bd_spacing" style='word-wrap:break-word'>
+    <view style='float:left'>甲方：{{company}}</view>
+    <view style='float:right'>乙方：{{driver}}</view>
+    <text>\n</text>
+    <text>\n</text>
+    <text>\n</text>
+    <view>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX货物磷石膏12.85吨，以每吨100元的价格让乙方从XXXX运送到XXXX，安全到达后支付乙方1000元佣金</view>
+  </view>
+</i-modal>
+
+<i-modal title="{{video_name}}" visible="{{showVideo}}" width="300px" height="200px" actions="{{ actionsVideo }}" bind:click="videoPlayModalClose">
+  <view class="page__bd page__bd_spacing" style='word-wrap:break-word'>
+    <view class='kuang_2' style='height:198px;weight:100%;'>
+      <video id="showVideo" src="{{video_src}}" controls></video>
+    </view>
+  </view>
+</i-modal>
+
+<i-modal title="磅单图片" visible="{{picShow}}" width="300px" height="200px" actions="{{ actions_resp }}" bind:click="picModalClose">
+  <view class="page__bd page__bd_spacing" style='word-wrap:break-word'>
+    <view class='kuang_2' style='height:198px;weight:100%;'>
+      <image style="background-color: #eeeeee;" mode="aspectFit" src="{{picSrc}}" binderror="picLoadError"></image>
+    </view>
+  </view>
+</i-modal>

@@ -1,0 +1,275 @@
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+<view style='display:{{driver}};padding-top:{{head_size}}'>
+  <i-notice-bar backgroundcolor="red" color='#FFFFFF' icon="prompt">
+    完善信息需要使用身份证、驾驶证和行驶证等证件
+  </i-notice-bar>
+  <i-panel title="请选择司机类别">
+
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ company }}" title="司机身份" type='textarea' placeholder="请选择司机身份" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <picker bindchange="bindCompanyChange" value="{{companyValue}}" range="{{companyList}}">
+          <i-icon type="unfold" size="35" color="#09bb07"></i-icon>
+        </picker>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row" style="display:none">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ company }}" title="归属公司" type='textarea' placeholder="请选择归属公司" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <picker bindchange="bindCompanyChange" value="{{companyValue}}" range="{{companyList}}">
+          <i-icon type="unfold" size="35" color="#09bb07"></i-icon>
+        </picker>
+      </i-col>
+    </i-row>
+  </i-panel>
+  <i-panel title="请准确填写车辆信息">
+  <!-- 加一个角色选择框 -->
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ headstock }}" title="车牌号" type='textarea' placeholder="请输入车头牌号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <i-icon type="camera" size="35" color="#09bb07" data-type='headstock' bindtap='picModalShow'></i-icon>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ trailer }}" title="挂车号" type='textarea' placeholder="请输入挂车牌号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <i-icon type="camera" size="35" color="#09bb07" data-type='headstock' bindtap='picModalShow'></i-icon>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ license }}" title="驾驶证号" type='textarea' placeholder="请输入驾驶证号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <i-icon type="camera" size="35" color="#09bb07" data-type='license' bindtap='picModalShow'></i-icon>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ license }}" title="营运证号" type='textarea' placeholder="请输入营运证号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <i-icon type="camera" size="35" color="#09bb07" data-type='license' bindtap='picModalShow'></i-icon>
+      </i-col>
+    </i-row>
+    
+  </i-panel>
+
+  <i-panel title="请准确填写个人信息">
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input value="{{ name }}" title="姓名" type='textarea' placeholder="请输入姓名" />
+      </i-col>
+    </i-row>
+    
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input value="{{ iDcard }}" title="身份证号" type='textarea' placeholder="请输入身份证号" />
+      </i-col>
+    </i-row>
+  </i-panel>
+  <i-panel title="请拍摄身份证照片">
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+    <i-row i-class="demo-row page__bd_spacing">
+      <i-col span="12" i-class="demo-col">
+        <view class='kuang' style='width:95%;height:300px;'>
+          <view wx:if='{{idPositive===""}}' class='icon-item' data-type='idPositive' bindtap='picModalShow'>
+            <i-icon type="add" size="40" color="#bbbec4"></i-icon>
+            <view class="icon-item-name">请拍摄身份证国徽面照片</view>
+          </view>
+          <view wx:else class='icon-item'>
+            <image style="background-color: #eeeeee;width:99%;height:280px" mode="aspectFit" src="{{idPositive}}" data-src='{{idPositive}}' bindtap='previewImage'></image>
+          </view>
+        </view>
+      </i-col>
+      <i-col span="12" i-class="demo-col">
+        <view class='kuang' style='width:98%;height:300px;'>
+          <view wx:if='{{idOtherSide===""}}' class='icon-item' data-type='idOtherSide' bindtap='picModalShow'>
+            <i-icon type="add" size="40" color="#bbbec4"></i-icon>
+            <view class="icon-item-name">请拍摄身份证人像面照片</view>
+          </view>
+          <view wx:else class='icon-item'>
+            <image style="background-color: #eeeeee;width:99%;height:280px" mode="aspectFit" src="{{idOtherSide}}" data-src='{{idOtherSide}}' bindtap='previewImage'></image>
+          </view>
+        </view>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+  </i-panel>
+  <!-- <i-panel title="请拍摄个人头像">
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+    <i-row i-class="demo-row page__bd_spacing">
+      <i-col span="24" i-class="demo-col">
+        <view class='kuang' style='width:99%;height:320px;'>
+          <view wx:if='{{headPortrait===""}}' class='icon-item' data-type='headPortrait' bindtap='picModalShow'>
+            <i-icon type="add" size="40" color="#bbbec4"></i-icon>
+            <view class="icon-item-name">请拍摄个人头像</view>
+          </view>
+          <view wx:else class='icon-item'>
+            <image style="background-color: #eeeeee;width:99%;height:300px" mode="aspectFit" src="{{headPortrait}}" data-src='{{headPortrait}}' bindtap='previewImage'></image>
+          </view>
+        </view>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+  </i-panel> -->
+  <view class="page__bd page__bd_spacing" style='padding-top:10pt'>
+    <button class="weui-btn" type="primary">提\t交</button>
+  </view>
+</view>
+
+
+
+<view style='display:{{staff}};padding-top:{{head_size}}'>
+  <i-notice-bar backgroundcolor="red" color='#FFFFFF' icon="prompt">
+    完善信息需要使用身份证等证件
+  </i-notice-bar>
+
+  <i-panel title="请准确填写个人信息">
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input value="{{ name }}" title="姓名" type='textarea' placeholder="请输入姓名" />
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ company }}" title="所属公司" type='textarea' placeholder="请选择挂靠公司" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <picker bindchange="bindCompanyChange" value="{{companyValue}}" range="{{companyList}}">
+          <i-icon type="unfold" size="35" color="#09bb07"></i-icon>
+        </picker>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input value="{{ iDcard }}" title="身份证号" type='textarea' placeholder="请输入身份证号" />
+      </i-col>
+    </i-row>
+  </i-panel>
+  <i-panel title="请拍摄身份证照片">
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+    <i-row i-class="demo-row page__bd_spacing">
+      <i-col span="12" i-class="demo-col">
+        <view class='kuang' style='width:95%;height:300px;'>
+          <view wx:if='{{idPositive===""}}' class='icon-item'>
+            <i-icon type="add" size="40" color="#bbbec4" data-type='idPositive' bindtap='picModalShow'></i-icon>
+            <view class="icon-item-name">请拍摄身份证国徽面照片</view>
+          </view>
+          <view wx:else class='icon-item'>
+            <image style="background-color: #eeeeee;width:99%;height:280px" mode="aspectFit" src="{{idPositive}}" data-src='{{idPositive}}' bindtap='previewImage'></image>
+          </view>
+        </view>
+      </i-col>
+      <i-col span="12" i-class="demo-col">
+        <view class='kuang' style='width:98%;height:300px;'>
+          <view wx:if='{{idOtherSide===""}}' class='icon-item'>
+            <i-icon type="add" size="40" color="#bbbec4" data-type='idOtherSide' bindtap='picModalShow'></i-icon>
+            <view class="icon-item-name">请拍摄身份证人像面照片</view>
+          </view>
+          <view wx:else class='icon-item'>
+            <image style="background-color: #eeeeee;width:99%;height:280px" mode="aspectFit" src="{{idOtherSide}}" data-src='{{idOtherSide}}' bindtap='previewImage'></image>
+          </view>
+        </view>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+  </i-panel>
+  <!-- <i-panel title="请拍摄个人头像">
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+    <i-row i-class="demo-row page__bd_spacing">
+      <i-col span="24" i-class="demo-col">
+        <view class='kuang' style='width:99%;height:320px;'>
+          <view class='icon-item'>
+            <view wx:if='{{headPortrait===""}}' class='icon-item' data-type='headPortrait' bindtap='picModalShow'>
+              <i-icon type="add" size="40" color="#bbbec4"></i-icon>
+              <view class="icon-item-name">请拍摄个人头像</view>
+            </view>
+            <view wx:else class='icon-item'>
+              <image style="background-color: #eeeeee;width:99%;height:300px" mode="aspectFit" src="{{headPortrait}}" data-src='{{headPortrait}}' bindtap='previewImage'></image>
+            </view>
+          </view>
+        </view>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <text>\n</text>
+    </i-row>
+  </i-panel> -->
+  <view class="page__bd page__bd_spacing" style='padding-top:10pt'>
+    <button class="weui-btn" type="primary">提\t交</button>
+  </view>
+</view>
+
+
+<i-modal title="{{modalTitle}}" visible="{{picModalShow}}" width="300px" height="355px" actions="{{ actionsPicResult }}" bind:click="picModalClose">
+  <view class="page__bd page__bd_spacing" style='word-wrap:break-word'>
+    <view class='kuang_2' style='height:250px;weight:100%;'>
+      <i-icon wx:if="{{picSrc===''}}" type="add" size="60" color="#dddee1" bindtap='chooseImage'></i-icon>
+      <image wx:else style="background-color: #eeeeee;" mode="aspectFit" src="{{picSrc}}" data-src='{{picSrc}}' bindtap='previewImage'></image>
+    </view>
+    <text>\n</text>
+    <view class='kuang_1' style='background-color:#FFFFFF;' >
+      <view class="weui-form-preview__bd" bindtap='showResultPictureModal'>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">吨位</view>
+          <view wx:if="{{picType=='load'}}" class="weui-form-preview__value">{{loadPound}}</view>
+          <view wx:else class="weui-form-preview__value">{{unloadPound}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">时间</view>
+          <view wx:if="{{picType=='load'}}" class="weui-form-preview__value">{{loadDate}}</view>
+          <view wx:else class="weui-form-preview__value">{{unloadDate}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</i-modal>
+
+<i-modal title="识别结果修改" visible='{{resultModalShow}}' width="300px" height="80px" actions="{{ actionsPicResult }}" bind:click="picResultModalClose">
+  <view style='background-color:#FFFFFF;'>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">识别吨位</view>
+      </view>
+      <view class="weui-cell__bd">
+        <input class="weui-input" type='number' value='{{picPound}}' placeholder="请输入准确的吨位" bindinput='picPoundChange'/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">识别日期</view>
+      </view>
+      <view class="weui-cell__bd">
+        <picker mode="date" value="{{picDate}}" bindchange="bindDateChange">
+          <view class="weui-input">{{picDate}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+</i-modal>

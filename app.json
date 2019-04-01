@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/choice/index",
+    "pages/rele_task/index",
+    "pages/task/index",
+    "pages/mine/index",
+    
+    "pages/info/index",
+    "pages/register/index",
+    "pages/detail_task/index",
+    
+    "pages/index/index",
+
+    "pages/accept_task/index",
+    "pages/list_task/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "磷石膏物流大数据平台",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  }
+}

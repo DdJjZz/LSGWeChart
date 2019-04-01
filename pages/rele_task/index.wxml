@@ -1,0 +1,105 @@
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+<view style='padding-top:{{head_size}};padding-bottom: {{padding_bottom}};'>
+  <view>
+    <text>\n</text>
+  </view>
+  <i-panel>
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ licensePlate }}" type='textarea' title="车牌号" disabled placeholder="请选择车牌号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <picker bindchange="bindPickerLicense" value="{{licenseIndex}}" range="{{licenseArray}}">
+          <i-icon type="unfold" size="35" color="#09BB07"></i-icon>
+        </picker>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <picker mode="date" value="{{startDate}}" start='{{startDate}}' bindchange="bindDateChange">
+          <i-input value="{{ startDate }}" type='textarea' title="发运时间" placeholder="请选择发运时间" disabled/>
+        </picker>
+      </i-col>
+    </i-row>
+    <!-- 可选 -->
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input title="运输货物" value='{{goods}}' type='textarea' disabled placeholder="请选择运输货物" disabled/>
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <picker bindchange="bindGoods" value="{{goodsIndex}}" range="{{goodsArray}}">
+          <i-icon type="unfold" size="35" color="#09BB07"></i-icon>
+        </picker>
+      </i-col>
+    </i-row>
+
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" data-type='start'>
+          <i-input title="装货地点" placeholder="请选择起点区域" type='textarea' value='{{startAddress}}' disabled />
+        </picker>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" data-type='end'>
+          <i-input title="卸货地点" placeholder="请选择终点区域" type='textarea' value='{{endAddress}}' disabled />
+        </picker>
+      </i-col>
+    </i-row>
+    <!-- 可选 -->
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input title="装货户头" value='{{loadAccount}}' type='textarea' disabled placeholder="请选择装货户头" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <picker bindchange="bindLoadAccount" value="{{loadAccountIndex}}" range="{{loadAccountArray}}">
+          <i-icon type="unfold" size="35" color="#09BB07"></i-icon>
+        </picker>
+      </i-col>
+    </i-row>
+    <!-- 可选 -->
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input title="卸货户头" value='{{unloadAccount}}' type='textarea' disabled placeholder="请选择卸货户头" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <picker bindchange="bindUnloadAccount" value="{{loadAccountIndex}}" range="{{loadAccountArray}}">
+          <i-icon type="unfold" size="35" color="#09BB07"></i-icon>
+        </picker>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input title="预装吨位" type='textarea' value='{{pound}}' placeholder="请输入吨位" bindchange='inputPoundChange' />
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input title="单价(元/吨)" type='textarea' value='{{price}}' placeholder="请输入价格" bindchange='inputPriceChange' />
+      </i-col>
+    </i-row>
+    <!-- <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input title="总价" placeholder="请输入总价" />
+      </i-col>
+    </i-row> -->
+  </i-panel>
+  <view class="page__bd page__bd_spacing" style='padding-top:10pt'>
+    <button class="weui-btn" type="primary" bindtap="releaseTask">发布任务</button>
+  </view>
+  <view class="page__bd page__bd_spacing" style='float:right;'>
+    <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">前往已拒绝任务列表</navigator>
+  </view>
+</view>
+<view class="foot" style='height:{{foot_height}}'>
+  <i-tab-bar current="{{ current }}" bindchange="handleChange">
+    <i-tab-bar-item key="homepage" icon="document" current-icon="document_fill" title="任务"></i-tab-bar-item>
+    <i-tab-bar-item key="group" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="remind" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="mine" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
+  </i-tab-bar>
+</view>

@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "任务发布",
+  "usingComponents": {
+    "i-row": "../../dist/row/index",
+    "i-col": "../../dist/col/index",
+    "i-input": "../../dist/input/index",
+    "i-button": "../../dist/button/index",
+    "i-panel": "../../dist/panel/index",
+    "i-icon": "../../dist/icon/index",
+    "i-cell": "../../dist/cell/index",
+    "i-tab-bar": "../../dist/tab-bar/index",
+    "i-tab-bar-item": "../../dist/tab-bar-item/index"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "用户注册",
+  "usingComponents": {
+    "i-row": "../../dist/row/index",
+    "i-col": "../../dist/col/index",
+    "i-input": "../../dist/input/index",
+    "i-button": "../../dist/button/index",
+    "i-panel": "../../dist/panel/index",
+    "i-icon": "../../dist/icon/index"
+  }
+}

@@ -1,0 +1,168 @@
+<!--pages/mine/index.wxml-->
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+<view style='padding-top:{{head_size}};display:block;padding-bottom: {{foot_height}};'>
+  <view style='width:100%;text-align:center'>
+    <text style='font-size:25px'>个人信息</text>
+  </view>
+  <view class="page">
+    <!-- <view class="page__bd page__bd_spacing"> -->
+    <view class="kind-list">
+      <view class="kind-list__item">
+        <view id="personal" class="weui-flex kind-list__item-hd {{personal ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+          <view class="weui-flex__item">个人信息</view>
+        </view>
+        <view class="kind-list__item-bd {{personal ? 'kind-list__item-bd_show' : ''}}">
+          <view class="weui-cells {{personal ? 'weui-cells_show' : ''}}">
+            <view class="weui-form-preview__bd">
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">姓名</view>
+                <view class="weui-form-preview__value">司思思</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">电话</view>
+                <view class="weui-form-preview__value">11111111111</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">所属公司</view>
+                <view class="weui-form-preview__value">
+                  <i-row i-class="demo-row">
+                    <i-col span="22" i-class="demo-col">
+                      <picker bindchange="bindCompanyChange" value="{{companyValue}}" range="{{companyList}}">
+                        <text style='color:#576B95'>{{companyList[companyValue]}}</text>
+                      </picker>
+                    </i-col>
+                    <i-col span="2" i-class="demo-col light">
+                      <picker bindchange="bindNotCompanyChange" value="{{notCompanyValue}}" range="{{notCompanyList}}">
+                        <i-icon type="add" size="22" color="#09BB07"></i-icon>
+                      </picker>
+                    </i-col>
+                  </i-row>
+                </view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">车牌号</view>
+                <view class="weui-form-preview__value">
+                  <i-row i-class="demo-row">
+                    <i-col span="22" i-class="demo-col">
+                      <picker bindchange="bindHeadstockChange" value="{{headstockList}}" range="{{headstockList}}">
+                        <text style='color:#576B95'>{{headstockList[headstockValue]}}</text>
+                      </picker>
+                    </i-col>
+                    <i-col span="2" i-class="demo-col light">
+                      <i-icon type="add" size="22" color="#09BB07" data-type='head' bindtap='newCarInfo'></i-icon>
+                    </i-col>
+                  </i-row>
+                </view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">挂车号</view>
+                <view class="weui-form-preview__value">
+                  <i-row i-class="demo-row">
+                    <i-col span="22" i-class="demo-col">
+                      <picker bindchange="bindTrailerChange" value="{{trailerList}}" range="{{trailerList}}">
+                        <text style='color:#576B95'>{{trailerList[trailerValue]}}</text>
+                      </picker>
+                    </i-col>
+                    <i-col span="2" i-class="demo-col light">
+                      <i-icon type="add" size="22" color="#09BB07" data-type='trailer' bindtap='newCarInfo'></i-icon>
+                    </i-col>
+                  </i-row>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="kind-list">
+      <view class="kind-list__item">
+        <view id="mounth" class="weui-flex kind-list__item-hd {{mounth ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+          <view class="weui-flex__item">月度信息</view>
+        </view>
+        <view class="kind-list__item-bd {{mounth ? 'kind-list__item-bd_show' : ''}}">
+          <view class="weui-cells {{mounth ? 'weui-cells_show' : ''}}">
+            <view class="weui-form-preview__bd">
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">当月运输总吨数</view>
+                <view class="weui-form-preview__value">1888</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">当月工资</view>
+                <view class="weui-form-preview__value">1111111</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="kind-list">
+      <view class="kind-list__item">
+        <view id="year" class="weui-flex kind-list__item-hd {{year ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+          <view class="weui-flex__item">年度信息</view>
+        </view>
+        <view class="kind-list__item-bd {{year ? 'kind-list__item-bd_show' : ''}}">
+          <view class="weui-cells {{year ? 'weui-cells_show' : ''}}">
+            <view class="weui-form-preview__bd">
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">当年运输总吨数</view>
+                <view class="weui-form-preview__value">11111</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">当年工资</view>
+                <view class="weui-form-preview__value">11111111111</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="foot" style='height:{{foot_height}}'>
+  <i-tab-bar current="{{ current }}" color="#2d8cf0" bindchange="handleChange">
+    <i-tab-bar-item key="document" icon="document" current-icon="document_fill" title="任务"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_1" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_2" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="mine" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
+  </i-tab-bar>
+</view>
+
+
+
+<i-modal title="{{modal_title}}" visible="{{picModalShow}}" width="300px" height="320px" actions="{{ actionsPicResult }}" bind:click="picModalClose">
+  <view class="page__bd page__bd_spacing" style='word-wrap:break-word'>
+    <view class='kuang_2' style='height:250px;weight:100%;'>
+      <i-icon wx:if="{{picSrc===''}}" type="add" size="60" color="#dddee1" bindtap='chooseImage'></i-icon>
+      <image wx:else style="background-color: #eeeeee;" mode="aspectFit" src="{{picSrc}}" data-src='{{picSrc}}' bindtap='previewImage'></image>
+    </view>
+    <text>\n</text>
+    <view class='kuang_1' style='background-color:#FFFFFF;'>
+      <view class="weui-form-preview__bd" bindtap='showResultPictureModal'>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">车牌信息</view>
+          <view class="weui-form-preview__value">{{licensePlate}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</i-modal>
+
+<i-modal title="识别结果修改" visible='{{resultModalShow}}' width="300px" height="80px" actions="{{ actionsPicResult }}" bind:click="picResultModalClose">
+  <view style='background-color:#FFFFFF;'>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">车牌号</view>
+      </view>
+      <view class="weui-cell__bd">
+        <input class="weui-input" type='number' value='{{licensePlate}}' placeholder="请输入准确的车牌号" bindinput='picPlateChange' />
+      </view>
+    </view>
+  </view>
+</i-modal>
+

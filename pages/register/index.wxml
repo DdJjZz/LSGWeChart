@@ -1,0 +1,49 @@
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+<view style='padding-top:{{top}}'>
+  <view class="page__bd page__bd_spacing">
+    <view class='kuang' style='width:100%;height:270px;'>
+      <view class="page__bd page__bd_spacing">
+        <view style='width:100%;text-align: center;font-size:25px;padding-top:30px'>
+          <text>注  册</text>
+        </view>
+
+        <view class="weui-cells weui-cells_after-title" style='top:20px'>
+          <view class="weui-cell weui-cell_input weui-cell_vcode">
+            <view class="weui-cell__hd">
+              <view class="weui-label">手机号</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" type='number' placeholder="请输入手机号" bindinput='telephoneChange' />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_input weui-cell_vcode">
+            <view class="weui-cell__hd">
+              <view class="weui-label">验证码</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" type='number' placeholder="请输入验证码" bindinput='verificationCodeChange' />
+            </view>
+            <view class="weui-cell__ft">
+              <view class="weui-vcode-btn">获取验证码</view>
+            </view>
+          </view>
+        </view>
+        <!-- <i-row i-class="demo-row">
+          <i-input title="手机号码" placeholder="请输入手机号码" type="number" bindinput='telephoneChange' />
+        </i-row>
+        <i-row i-class="demo-row">
+          <i-col span="16" i-class="demo-col">
+            <i-input title="验证码" placeholder="请输入验证码" type="number" bindinput='verificationCodeChange' />
+          </i-col>
+          <i-col span="8" i-class="demo-col">
+            <button class="weui-btn mini-btn" type="primary" size="mini" style='width:100%;height:30px;top:10px'>获取验证码</button>
+          </i-col>
+        </i-row> -->
+        <button class="weui-btn" type="primary" style='top:20px' bindtap='registerButtonClick'>注册</button>
+      </view>
+    </view>
+  </view>
+</view>

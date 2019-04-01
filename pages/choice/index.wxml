@@ -1,0 +1,10 @@
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+<view style='padding-top:280px;display:{{body}}'>
+  <view class="page__bd page__bd_spacing">
+    <button class="weui-btn" type="primary" data-name='1' bindtap="choise">我是司机</button>
+    <button class="weui-btn" type="warn" data-name='2' bindtap="choise">我是物流公司</button>
+  </view>
+</view>

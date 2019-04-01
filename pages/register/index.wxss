@@ -1,0 +1,15 @@
+/**index.wxss**/
+@import '../choice/index.wxss';
+
+.kuang{
+  border: 1px;
+  border-style: solid;
+  border-color: #dddee1;
+  border-radius:5px;
+  background-color: #FFFFFF;
+  /* text-align: center;
+  vertical-align: middle; */
+  /* display: flex;
+  justify-content:center;
+  align-items:Center; */
+}

@@ -1,0 +1,105 @@
+<view class='title'>
+  <image style='width:60px;height:60px;position:fixed;float: left;padding-left:5px' src='../../img/transport.svg'>
+  </image>
+  <text class='txt_title'>固废运输大数据平台</text>
+</view>
+<view class='body_1'>
+  <i-panel title="请准确填写车辆信息">
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="车头牌号" placeholder="请输入车头牌号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <i-icon type="camera" size="40" color="#2d8cf0"></i-icon>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="挂车牌号" placeholder="请输入挂车牌号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <i-icon type="camera" size="40" color="#2d8cf0"></i-icon>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="驾驶证号" placeholder="请输入驾驶证号" />
+      </i-col>
+      <i-col span="4" i-class="demo-col">
+        <i-icon type="camera" size="40" color="#2d8cf0"></i-icon>
+      </i-col>
+    </i-row>
+  </i-panel>
+  <i-panel title="请准确填写个人信息">
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="姓名" placeholder="请输入姓名" />
+      </i-col>
+    </i-row>
+    <!-- <i-row i-class="demo-row">
+      <i-col span="16" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="手机号" placeholder="请输入手机号" />
+      </i-col>
+      <i-col span="8" i-class="demo-col">
+        <button class="weui-btn mini-btn" type="primary" size="mini" style='width:105px;height:30px;top:10px'>发送验证码</button>
+      </i-col>
+    </i-row> -->
+    <!-- <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="验证码" placeholder="请输入验证码" />
+      </i-col>
+    </i-row> -->
+    <i-row i-class="demo-row">
+      <i-col span="20" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="所属公司" placeholder="请选择所属公司" />
+      </i-col>
+      <i-col span="4" i-class="demo-col" bindtap="handleClick">
+        <i-icon type="enter" size="40" color="#bbbec4"></i-icon>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input value="{{ value1 }}" title="身份证号" placeholder="请输入身份证号" />
+      </i-col>
+    </i-row>
+  </i-panel>
+  <i-panel title="请拍摄身份证照片">
+  <i-row i-class="demo-row"><text>\n</text></i-row>
+    <i-row i-class="demo-row page__bd_spacing">
+      <i-col span="12" i-class="demo-col">
+        <view class='kuang' style='width:95%;height:300px;'>
+          <view class='icon-item'>
+            <i-icon type="add" size="40" color="#bbbec4"></i-icon>
+            <view class="icon-item-name">请拍摄身份证国徽面照片</view>
+          </view>
+        </view>
+      </i-col>
+      <i-col span="12" i-class="demo-col">
+        <view class='kuang' style='width:98%;height:300px;'>
+          <view class='icon-item'>
+            <i-icon type="add" size="40" color="#bbbec4"></i-icon>
+            <view class="icon-item-name">请拍摄身份证人像面照片</view>
+          </view>
+        </view>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row"><text>\n</text></i-row>
+  </i-panel>
+  <i-panel title="请拍摄个人头像">
+  <i-row i-class="demo-row"><text>\n</text></i-row>
+    <i-row i-class="demo-row page__bd_spacing">
+      <i-col span="24" i-class="demo-col">
+        <view class='kuang' style='width:99%;height:320px;'>
+          <view class='icon-item'>
+            <i-icon type="add" size="40" color="#bbbec4"></i-icon>
+            <view class="icon-item-name">请拍摄个人头像</view>
+          </view>
+        </view>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row"><text>\n</text></i-row>
+  </i-panel>
+  <view class="page__bd page__bd_spacing" style='padding-top:10pt'>
+    <button class="weui-btn" type="primary">申请挂靠</button>
+  </view>
+</view>

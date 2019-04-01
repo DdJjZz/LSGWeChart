@@ -1,0 +1,36 @@
+@import '../choice/index.wxss';
+.bottom_line{
+  width: 100%;
+  height: 1px;
+  border-bottom: solid #dddee1 1px;
+}
+
+.kuang_1{
+  border: 1px;
+  border-style: solid;
+  border-color: #dddee1;
+  border-radius:5px;
+  /* text-align: center;
+  vertical-align: middle; */
+  /* display: flex;
+  justify-content:center;
+  align-items:Center; */
+}
+
+.demo-container{
+	width:50vw;
+	height: 100vh;
+	background:#fff;
+}
+
+.kuang_2{
+  border: 1px;
+  border-style: solid;
+  border-color: #dddee1;
+  border-radius:5px;
+  /* text-align: center;
+  vertical-align: middle; */
+  display: flex;
+  justify-content:center;
+  align-items:Center;
+}

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "用户信息完善",
+  "usingComponents": {
+    "i-row": "../../dist/row/index",
+    "i-col": "../../dist/col/index",
+    "i-input": "../../dist/input/index",
+    "i-panel": "../../dist/panel/index",
+    "i-icon": "../../dist/icon/index",
+    "i-notice-bar": "../../dist/notice-bar/index",
+    "i-modal": "../../dist/modal/index"
+  }
+}

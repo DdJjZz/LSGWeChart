@@ -1,0 +1,63 @@
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+<view style='padding-top:{{head_size}};display:block;padding-bottom: {{foot_height}};'>
+  <view style='width:100%;text-align:center'>
+    <text style='font-size:25px'>已完成任务列表</text>
+    <i-icon type="other" size="40" color="#1396db" style='float:right;padding-right:10px' bindtap='drawerPageRight'></i-icon>
+  </view>
+  <text>\n</text>
+  <view wx:if="{{taskList.length>0}}" wx:for="{{taskList}}" class="page__bd page__bd_spacing"  wx:key="{{item.taskId}}" >
+    <view class='kuang_1' style='background-color:#FFFFFF' data-taskid='{{item.taskId}}' bindtap='taskDetail'>
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">{{item.taskId}}</view>
+          <view class="weui-form-preview__value">{{item.start}}-{{item.end}}</view>
+        </view>
+      </view>
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">{{item.type}}</view>
+          <view class="weui-form-preview__value">{{item.date}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="foot" style='height:{{foot_height}}'>
+  <i-tab-bar current="{{ current }}" color="#2d8cf0" bindchange="handleChange">
+    <i-tab-bar-item key="document" icon="document" current-icon="document_fill" title="任务"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_1" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_2" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="mine" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
+  </i-tab-bar>
+</view>
+
+<i-drawer mode="right" visible="{{drawerPage}}" style='padding-right:10px' bind:close="drawerPageRight">
+  <!-- <i-drawer mode="right" visible="true" style='height:200px' bind:close="drawerPageRight"> -->
+  <view class="demo-container page__bd page__bd_spacing" style='padding-top:200px'>
+    <i-row i-class="demo-row light">
+      <i-col span="10" i-class="demo-col">
+        <view style='padding-top:7px'>开始时间</view>
+      </i-col>
+      <i-col span="14" i-class="demo-col light">
+        <picker mode="date" value="{{startDate}}" bindchange="startDateChange">
+          <view class="weui-input">{{startDate}}</view>
+        </picker>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row light">
+      <i-col span="10" i-class="demo-col">
+        <view style='padding-top:7px'>结束时间</view>
+      </i-col>
+      <i-col span="14" i-class="demo-col light">
+        <picker mode="date" value="{{endDate}}" bindchange="endDateChange">
+          <view class="weui-input">{{endDate}}</view>
+        </picker>
+      </i-col>
+    </i-row>
+    <button class="weui-btn" type="primary" bindtap='getTaskList'>查询</button>
+  </view>
+</i-drawer>
