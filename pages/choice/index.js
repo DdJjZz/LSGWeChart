@@ -107,8 +107,8 @@ Page({
 
   userCallbackInfoCheck(resp){
     console.log(resp)
+    util.userData.singlePosition = setInterval(this.getUserLoaction, 60000);
     if(resp.status=='true'){
-      util.userData.singlePosition = setInterval(this.getUserLoaction, 60000);
       util.userData.userID=resp.uid;
       util.userData.userType = resp.utype;
       util.userData.userStatus = resp.ustatus;
@@ -128,6 +128,7 @@ Page({
       this.setData({
         body:'block'
       });
+      util.userData.openid=resp.openid
       this.show(resp.message)
     }
   },
@@ -146,6 +147,7 @@ Page({
             action: 'UploadUserLoaction',
             body:{
               userid: util.userData.userID,
+              userStatus:util.userData.userStatus,
               longitude: util.userData.longitude,
               latitude: util.userData.latitude,
             },
@@ -157,7 +159,7 @@ Page({
           },
           success({ data }) {
             if(data.status=='true'){
-
+              util.userData.userStatus = data.userStatus
             }
             else{
               that.show("用户信息获取失败")

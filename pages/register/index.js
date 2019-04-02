@@ -104,20 +104,22 @@ Page({
     console.log(this.data.telephone)
     console.log(this.data.code)
     if (this.data.telephone == "") {
-      wx.showToast({
-        title: '手机号不可为空',
-        icon: 'none',
-        duration: 2000
-      });
+      this.show("手机号不可为空");
     }
-    if (this.data.code == "") {
-      wx.showToast({
-        title: '验证码不可为空',
-        icon: 'none',
-        duration: 2000
-      });
-    }
-    if ((this.data.code != "") && (this.data.telephone != "")) {
+    // if (this.data.code == "") {
+    //   wx.showToast({
+    //     title: '验证码不可为空',
+    //     icon: 'none',
+    //     duration: 2000
+    //   });
+    // }
+    // if ((this.data.code != "") && (this.data.telephone != "")) {
+    //   wx.navigateTo({
+    //     url: '../info/index',
+    //   })
+    // }
+
+    if (this.data.code != "") {
       wx.navigateTo({
         url: '../info/index',
       })
@@ -131,10 +133,18 @@ Page({
     })
   },
 
-  verificationCodeChange(e) {
-    console.log(e.detail.value)
-    this.setData({
-      code: e.detail.value,
-    })
+  // verificationCodeChange(e) {
+  //   console.log(e.detail.value)
+  //   this.setData({
+  //     code: e.detail.value,
+  //   })
+  // }
+
+  show(msg){
+    wx.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    });
   }
 })

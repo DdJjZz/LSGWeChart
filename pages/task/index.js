@@ -116,7 +116,6 @@ Page({
    */
   onLoad: function(options) {
     // this.loadVideoContext = wx.createVideoContext('loadVideo');
-    console.log(Date.parse(new Date()))
     this.showVideoContext = wx.createVideoContext('showVideo');
     switch (util.userData.userStatus) {
       case 1:
@@ -206,15 +205,14 @@ Page({
     });
   },
 
-  handleChangeBlock({
-    detail
-  }) {
+  handleChangeBlock({detail}) {
     this.setData({
       current_block: detail.key
     });
+    console.log(util.userData.userStatus);
     switch (detail.key) {
       case "accept":
-        if (util.userData.userStatus == 1) {
+        if (util.userData.userStatus == "1") {
           this.getAcceptTaskInfo(util.userData.userID);
           this.setData({
             accept: "block",
@@ -230,7 +228,7 @@ Page({
         }
         break;
       case "accepted":
-        if (util.userData.userStatus == 2) {
+        if (util.userData.userStatus == "2") {
           this.getAcceptedTaskInfo(util.userData.userID)
           this.setData({
             accept: "none",
@@ -285,6 +283,7 @@ Page({
         }) {
           console.log(data)
           if (data.status == 'true') {
+            util.userData.userStatus='2'
             that.getAcceptedTaskInfo(util.userData.userID)
           } else {
             that.setData({
@@ -379,6 +378,7 @@ Page({
       success(res) {
         var data = res.data
         if (data.status == 'true') {
+          util.userData.userStatus = '4';
           that.setData({
             accept: "none",
             accepted: "none",
@@ -720,7 +720,7 @@ Page({
         }
       },
       fail() {
-        that.show()
+        that.show("请检查网络信息")
       }
     })
   },
@@ -769,7 +769,36 @@ Page({
   },
 
   delVideo(e) {
-    console.log(e.currentTarget.dataset.key)
+    var that=this
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'VideoDelete',
+        body: {
+          type: e.currentTarget.dataset.type,
+          taskid: that.data.wayBillId,
+          src: e.currentTarget.dataset.src,
+        },
+        type: 'query',
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data)
+        if (data.status == 'true') {
+          that.getTaskVideList();
+        } else {
+          that.show("删除失败")
+        }
+      },
+      fail() {
+        that.show("删除失败")
+      }
+    })
   },
 
   videoLoadModalShow(e) {
@@ -794,8 +823,8 @@ Page({
     var that = this;
     console.log(this.data.videoType);
     wx.chooseVideo({
-      sourceType: ['album', 'camera'],
-      maxDuration: 60,
+      sourceType: ['camera'],
+      maxDuration: 20,
       camera: 'back',
       success(res) {
         console.log(that.showVideoContext)
@@ -812,12 +841,15 @@ Page({
             'action': 'newVideo',
             'taskId': that.data.wayBillId,
             'type': that.data.videoType,
-            'length':that.data.video_length+1
+            'length': that.data.video_length + 1
           },
           success(res) {
             wx.hideLoading();
-
-            console.log(res.data)
+            console.log(res.data);
+            var path = JSON.parse(res.data).path
+            that.setData({
+              video_src: "http://127.0.0.1/upload/VIDEO/" + that.data.wayBillId + "/" + path
+            });
           },
           fail(res) {
             wx.hideLoading();
@@ -838,12 +870,46 @@ Page({
     var that = this
     if (detail.index == 0) {
       this.showVideoContext.stop();
+      this.setData({
+        newVideoSrc: "",
+        uploadVideo: false,
+      });
       wx.showLoading({
         title: '文件上传中',
       });
-      setTimeout(function() {
-        wx.hideLoading()
-      }, 2000);
+      wx.request({
+        url: util.userData.requestUrl,
+        data: {
+          action: 'UploadVideo',
+          body: {
+            type: that.data.videoType,
+            taskid: that.data.wayBillId,
+            videoSrc: that.data.video_src,
+            longitude: util.userData.longitude,
+            latitude: util.userData.latitude,
+          },
+          type: 'insert',
+        },
+        method: "POST",
+        head: {
+          'content-type': 'application/json' // 默认值
+        },
+        success({
+          data
+        }) {
+          wx.hideLoading()
+          console.log(data);
+          if (data.status == 'true') {
+            that.getTaskVideList()
+          } else {
+            that.show("信息上传失败！")
+          }
+        },
+        fail() {
+          wx.hideLoading()
+          that.show("请检查网络信息")
+        }
+      })
     } else {
       this.showVideoContext.stop();
       this.setData({
@@ -853,6 +919,44 @@ Page({
     }
   },
 
+  getTaskVideList() {
+    var that = this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'VideoList',
+        body: {
+          taskid: that.data.wayBillId,
+        },
+        type: 'query',
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.setData({
+            oldLoadVideoFilePath: data.load,
+            oldUnloadVideoFilePath: data.unload,
+            video_length:data.length
+          });
+        } else {
+          wx.hideLoading()
+          that.show("信息上传失败！")
+        }
+      },
+      fail() {
+        wx.hideLoading()
+        that.show("请检查网络信息")
+      }
+    })
+  },
+
+
   previewImage: function(e) {
     wx.previewImage({
       current: e.currentTarget.src, // 当前显示图片的http链接
@@ -861,13 +965,41 @@ Page({
   },
 
   taskReadyDone() {
-    this.setData({
-      userState: 3,
-      accept: "none",
-      accepted: "none",
-      task_list: "block",
-      current_block: "task_list"
-    });
+    var that=this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'TaskDone',
+        body: {
+          taskid: that.data.wayBillId,
+        },
+        type: 'update',
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({data}) {
+        console.log(data);
+        if (data.status == 'true') {
+          util.userData.userStatus='3',
+          that.setData({
+            accept: "none",
+            accepted: "none",
+            task_list: "block",
+            current_block: "task_list"
+          });
+          that.getUserTaskList(util.formatTime(new Date()), util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)))
+        } else {
+          that.show("提交失败，请重试")
+        }
+      },
+      fail() {
+        wx.hideLoading()
+        that.show("请检查网络信息")
+      }
+    })
+    
   },
 
 
@@ -1009,7 +1141,7 @@ Page({
             taskList: data.taskList,
           });
         } else {
-          that.show("请重启以查看待接受任务")
+          that.show("信息获取失败")
         }
       },
       fail() {
@@ -1022,6 +1154,8 @@ Page({
       }
     });
   },
+
+
 
   show(msg) {
     wx.showToast({

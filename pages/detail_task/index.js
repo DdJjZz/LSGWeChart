@@ -1,4 +1,5 @@
 // pages/detail_task/index.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -17,111 +18,40 @@ Page({
     foot_height: "50px",
     height_size: "60px",
     current: 'document',
-    contract: false,
     contract_resp: false,
-    loadVideo: false,
-    unloadVideo: false,
     showVideo: false,
-    picType: "1",
     picShow: false,
 
-    wayBillAccept: [
-      {
-        key: "运输货物",
-        value: '固体磷石膏'
-      },
-      {
-        key: "装货地点",
-        value: '上海市浦东新区金海路11188号当铺'
-      },
-      {
-        key: "卸货地点",
-        value: '上海市浦东新区金海路11188号当铺'
-      },
-      {
-        key: "装货户头",
-        value: 'XXXXXXXXXX'
-      },
-      {
-        key: "卸货户头",
-        value: 'XXXXXXXXXX'
-      },
-      {
-        key: "单价(元/吨)",
-        value: '18'
-      },
-      {
-        key: "运输费",
-        value: '1200'
-      },
-      {
-        key: "合同单号",
-        value: 'CID201903220001'
-      },
-      
-    ],
+
+    wayBillId: "",
+    wayBillAccept: [],
 
     actions_resp: [{
       name: '关闭',
       color: '#19be6b'
     }],
 
-    actionsVideoUpload: [{
-        name: '上传',
-        color: '#19be6b'
-      },
-      {
-        name: '取消'
-      }
-    ],
 
-    actionsVideo: [{
-      name: '关闭'
-    }],
+    actionsVideo: [{name: '关闭'}],
 
-    actionsPicture: [{
-
-    }],
-
-
-    oldLoadVideoFilePath: [{
-        key: "1",
-        name: "装货视频1.mp4",
-        src: "http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
-      },
-      {
-        key: "2",
-        name: "装货视频2.mp4",
-        src: "http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
-      }
-    ],
-    oldUnloadVideoFilePath: [{
-        key: "3",
-        name: "卸货视频1.mp4",
-        src: "http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
-      },
-      {
-        key: "4",
-        name: "卸货视频2.mp4",
-        src: "http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
-      }
-    ],
+    oldLoadVideoFilePath: [],
+    oldUnloadVideoFilePath: [],
 
     company: "XXXXXXXXX公司",
     driver: "李四",
     newVideoSrc: "",
 
-    picLoadPound: "15",
-    picLoadDate: '2019-03-19',
-    picUnloadPound: "15",
-    picUnloadDate: '2019-03-19',
-    picPound: "0",
-    picDate: '2019-01-01',
-    picSrc: "",
-    // picLoad:"http://127.0.0.1/pic/9.jpg",
-    picLoad: "",
-    picUnload: "http://127.0.0.1/pic/12.jpg",
-    taskId: '123456'
+    picLoadPound: "",
+    picLoadDate: '',
+    picUnloadPound: "",
+    picUnloadDate: '',
+    picLoad:"",
+    picUnload: "",
+    text_1: "",
+    type: "",
+    text_2: "",
+    price: "",
+    text_3: ""
   },
 
   /**
@@ -129,6 +59,53 @@ Page({
    */
   onLoad: function(options) {
     console.log(options.taskid);
+    var that=this;
+    this.setData({
+      wayBillId: options.taskid
+    });
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetTaskDetail',
+        body: {
+          taskid: options.taskid
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({data}) {
+        console.log(data)
+        if (data.status == 'true') {
+          that.setData({
+            wayBillId: data.wayBillId,
+            wayBillAccept: data.wayBillAccept,
+            oldLoadVideoFilePath: data.oldLoadVideoFilePath,
+            oldUnloadVideoFilePath: data.oldUnloadVideoFilePath,
+            picLoad: data.picLoadSrc,
+            picUnload: data.picUnloadSrc,
+            picLoadPound: data.loadPound,
+            picLoadDate: data.loadDate,
+            picUnloadPound: data.unloadPound,
+            picUnloadDate: data.unloadDate,
+            company: data.company,
+            driver: data.driver,
+          });
+        } else {
+          that.show("请重启以查看待接受任务")
+        }
+      },
+      fail() {
+        that.setData({
+          accept: 'none',
+          accepted: "none",
+          task_list: "none",
+        });
+        that.show("请检查网络信息")
+      }
+    });
   },
 
   /**
@@ -225,9 +202,7 @@ Page({
     });
   },
 
-  handleChange({
-    detail
-  }) {
+  handleChange({detail}) {
     this.setData({
       current: detail.key
     });
@@ -238,10 +213,15 @@ Page({
         });
         break;
       case "prompt_1":
+        this.show("页面开发中")
         break;
       case "prompt_2":
+        this.show("页面开发中")
         break;
       case "mine":
+        wx.redirectTo({
+          url: '../mine/index',
+        })
         break;
       default:
         break;
@@ -325,5 +305,42 @@ Page({
     this.setData({
       contract_resp: !this.data.contract_resp
     });
+    var that=this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetContractInfo',
+        body: {
+          taskid: that.data.wayBillId
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({data}){
+        console.log(data)
+        that.setData({
+          text_1: data.text_1,
+          type: data.type,
+          text_2: data.text_2,
+          price: data.price,
+          text_3: data.text_3
+        });
+      },
+      fail(){
+        that.show("网络请求错误")
+      }
+    })
+
+  },
+
+  show(msg) {
+    wx.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    })
   },
 })

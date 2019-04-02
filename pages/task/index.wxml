@@ -123,7 +123,7 @@
         <view wx:if="{{oldLoadVideoFilePath.length>0}}" class="weui-form-preview__bd">
           <view class="weui-form-preview__item" wx:for="{{oldLoadVideoFilePath}}" wx:key="{{item.key}}">
             <view class="weui-form-preview__label" style='color:#0bb20c' data-key='{{item.key}}' data-title='{{item.name}}' data-src='{{item.src}}' bindtap='playVideo'>{{item.name}}</view>
-            <i-icon type="close" size="20" color="red" bindtap='delVideo' data-key='{{item.key}}'></i-icon>
+            <i-icon type="close" size="20" color="red" bindtap='delVideo' data-key='{{item.key}}' data-src='{{item.src}}' data-type='load'></i-icon>
           </view>
         </view>
       </view>
@@ -142,7 +142,7 @@
         <view wx:if="{{oldUnloadVideoFilePath.length>0}}" class="weui-form-preview__bd">
           <view class="weui-form-preview__item" wx:for="{{oldUnloadVideoFilePath}}" wx:key="{{item.key}}">
             <view class="weui-form-preview__label" style='color:#0bb20c' data-key='{{item.key}}' data-title='{{item.name}}' data-src='{{item.src}}' bindtap='playVideo'>{{item.name}}</view>
-            <i-icon type="close" size="20" color="red" bindtap='delVideo' data-key='{{item.key}}'></i-icon>
+            <i-icon type="close" size="20" color="red" bindtap='delVideo' data-key='{{item.key}}' data-src='{{item.src}}' data-type='unload'></i-icon>
           </view>
         </view>
       </view>

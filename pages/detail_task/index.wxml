@@ -16,7 +16,7 @@
         </view>
         <view class="weui-form-preview__bd">
           <view wx:for="{{wayBillAccept}}" wx:key="{{item.key}}" class="weui-form-preview__item">
-            <view wx:if="{{item.key=='合同单号'}}">
+            <view wx:if="{{item.key=='合同信息'}}">
               <view class="weui-form-preview__label">{{item.key}}</view>
               <view class="weui-form-preview__value" style='color:#0bb20c' bindtap='showContractModalResp'>{{item.value}}</view>
             </view>
@@ -126,7 +126,7 @@
     <text>\n</text>
     <text>\n</text>
     <text>\n</text>
-    <view>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX货物磷石膏12.85吨，以每吨100元的价格让乙方从XXXX运送到XXXX，安全到达后支付乙方1000元佣金</view>
+    <view>{{text_1}}{{type}}{{text_2}}{{price}}{{text_3}}</view>
   </view>
 </i-modal>
 

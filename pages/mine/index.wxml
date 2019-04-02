@@ -19,11 +19,11 @@
             <view class="weui-form-preview__bd">
               <view class="weui-form-preview__item">
                 <view class="weui-form-preview__label">姓名</view>
-                <view class="weui-form-preview__value">司思思</view>
+                <view class="weui-form-preview__value">{{uname}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="weui-form-preview__label">电话</view>
-                <view class="weui-form-preview__value">11111111111</view>
+                <view class="weui-form-preview__value">{{utelphone}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="weui-form-preview__label">所属公司</view>
@@ -88,11 +88,11 @@
             <view class="weui-form-preview__bd">
               <view class="weui-form-preview__item">
                 <view class="weui-form-preview__label">当月运输总吨数</view>
-                <view class="weui-form-preview__value">1888</view>
+                <view class="weui-form-preview__value">{{mPound}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="weui-form-preview__label">当月工资</view>
-                <view class="weui-form-preview__value">1111111</view>
+                <view class="weui-form-preview__value">{{mWages}}</view>
               </view>
             </view>
           </view>
@@ -110,11 +110,11 @@
             <view class="weui-form-preview__bd">
               <view class="weui-form-preview__item">
                 <view class="weui-form-preview__label">当年运输总吨数</view>
-                <view class="weui-form-preview__value">11111</view>
+                <view class="weui-form-preview__value">{{yPound}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="weui-form-preview__label">当年工资</view>
-                <view class="weui-form-preview__value">11111111111</view>
+                <view class="weui-form-preview__value">{{yWages}}</view>
               </view>
             </view>
           </view>

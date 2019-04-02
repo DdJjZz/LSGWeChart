@@ -25,23 +25,29 @@ Page({
     userType: '1',
     length: 1,
     picType: 'head',
-    portrait_src: 'http://127.0.0.1/pic/1234.png',
-    companyList: ["公司一", "公司二", "公司三", "公司四", "公司五", "公司六", "公司七", "公司八", "公司九", "公司十"],
+    companyList: [],
     companyValue: 0,
 
-    headstockList: ["沪A123456", "沪A234567", "沪A345678", "沪A456789", "沪A567891", "沪A678912", "沪A789123", "沪A891234"],
+    headstockList: [],
     headstockValue: 0,
 
-    trailerList: ["沪A12345挂", "沪A23456挂", "沪A34567挂", "沪A45678挂", "沪A56789挂", "沪A67891挂", "沪A78912挂", "沪A89123挂"],
+    trailerList: [],
     trailerValue: 0,
 
-    notCompanyList: ["公司十一", "公司十二", "公司十三", "公司十四", "公司十五", "公司十六", "公司十七", "公司十八", "公司十九", "公司二十"],
+    notCompanyList: [],
     notCompanyValue: 0,
 
     picModalShow: false,
     resultModalShow: false,
 
     picSrc: '',
+
+    uname:"",
+    utelphone: "",
+    mPound: "",
+    mWages: "",
+    yPound: "",
+    yWages: "",
 
     actionsPicResult: [{
         name: '确定',
@@ -61,10 +67,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.setData({
-      userid: options.userid,
-      userType: options.usertype,
-    });
+    this.getUserInfo();
+    this.getCompanyList();
+    this.getCarList();
   },
 
   /**
@@ -136,13 +141,11 @@ Page({
 
   },
 
-  handleChange({
-    detail
-  }) {
+  handleChange({detail}) {
     var key = detail.key
     switch (key) {
       case "document":
-        if (this.data.userType == '1') {
+        if (util.userData.userType == '1') {
           wx.redirectTo({
             url: '../task/index',
           })
@@ -225,18 +228,36 @@ Page({
     });
   },
   bindNotCompanyChange(e) {
-    var companyList = this.data.companyList
-    var notCompanyList = this.data.notCompanyList
     var value = e.detail.value;
-    this.onLoad;
-    companyList.push(this.data.notCompanyList[value]);
-    notCompanyList.splice(value, 1)
-    this.setData({
-      companyList: companyList,
-      notCompanyList: notCompanyList
+    var that = this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'BindingCompany',
+        body: {
+          userid: util.userData.userID,
+          cname:this.data.notCompanyList[value]
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.getCompanyList();
+        } else {
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        that.show("网络请求失败")
+      }
     });
-    // console.log(this.data.notCompanyList);
-    // console.log(this.data.companyList)
   },
 
   newCarInfo(e) {
@@ -281,7 +302,7 @@ Page({
             'action': 'newCar',
             'userid': that.data.userid,
             'type': that.data.picType,
-            'length': that.data.length,
+            'length': that.data.length+1,
           },
           success(res) {
             console.log(res)
@@ -296,12 +317,12 @@ Page({
                 });
               } else {
                 that.setData({
-                  picSrc: "http://127.0.0.1/upload/" + that.data.userid + "/" + resData.path
+                  picSrc: "http://127.0.0.1/upload/CAR/" + that.data.userid + "/" + resData.path
                   // picUnloadSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path,
                   // picSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path
                 });
               }
-              that.poundPictureRecDistinguish("http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path, resData.type);
+              that.poundPictureRecDistinguish("http://127.0.0.1/upload/CAR/" + that.data.userid + "/" + resData.path, resData.type);
             } else {
               wx.showToast({
                 title: resData.message,
@@ -329,16 +350,40 @@ Page({
       title: '信息识别中',
     })
 
-    setTimeout(function() {
-      wx.hideLoading()
-    }, 2000)
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'LicenseDistinguish',
+        body: {
+          filePath: filePath,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          wx.hideLoading()
+          that.setData({
+            resultModalShow: true,
+            licensePlate: data.plate,
+          })
+        } else {
+          wx.hideLoading()
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        wx.hideLoading()
+        that.show("网络请求失败")
+      }
+    });
 
-    setTimeout(function() {
-      that.setData({
-        resultModalShow: true,
-        picPound: "15",
-      })
-    }, 2000)
   },
 
   picPlateChange(e) {
@@ -363,30 +408,78 @@ Page({
   },
 
   picModalClose(e) {
+    var that=this;
     var index = e.detail.index;
     if (index == 0) {
       var type = this.data.picType;
-      if (type == "head") {
-        var headstockList = this.data.headstockList;
-        headstockList.push(this.data.licensePlate)
-        this.setData({
-          picSrc: '',
-          picModalShow: false,
-          headstockList: headstockList
-        });
-      } else {
-        var trailerList = this.data.trailerList;
-        trailerList.push(this.data.licensePlate)
-        this.setData({
-          picSrc: '',
-          picModalShow: false,
-          trailerList: trailerList
-        });
-      }
+      // if (type == "head") {
+      //   var headstockList = this.data.headstockList;
+      //   headstockList.push(this.data.licensePlate)
+      //   this.setData({
+      //     picSrc: '',
+      //     picModalShow: false,
+      //     headstockList: headstockList
+      //   });
+      // } else {
+      //   var trailerList = this.data.trailerList;
+      //   trailerList.push(this.data.licensePlate)
+      //   this.setData({
+      //     picSrc: '',
+      //     picModalShow: false,
+      //     trailerList: trailerList
+      //   });
+      // }
+
+      wx.request({
+        url: util.userData.requestUrl,
+        data: {
+          action: 'BindingPlate',
+          body: {
+            uid:util.userData.userID,
+            plate:that.data.licensePlate,
+            type:type,
+            filePath: that.data.picSrc,
+          },
+          type: 'query'
+        },
+        method: "POST",
+        head: {
+          'content-type': 'application/json' // 默认值
+        },
+        success({
+          data
+        }) {
+          console.log(data);
+          if (data.status == 'true') {
+            that.getCarList();
+            that.setData({
+              picSrc: '',
+              picModalShow: false,
+              licensePlate:''
+            })
+          } else {
+            that.setData({
+              picSrc: '',
+              picModalShow: false,
+              licensePlate: ''
+            })
+            that.show(data.msg);
+          }
+        },
+        fail() {
+          that.setData({
+            picSrc: '',
+            picModalShow: false,
+            licensePlate: ''
+          })
+          that.show("网络请求失败")
+        }
+      });
     } else {
       this.setData({
         picModalShow: false,
-        licensePlate: ""
+        licensePlate: "",
+        picSrc: '',
       });
     }
   },
@@ -402,5 +495,120 @@ Page({
       current: e.currentTarget.src, // 当前显示图片的http链接
       urls: [this.data.picSrc] // 需要预览的图片http链接列表
     })
+  },
+
+  show(msg) {
+    wx.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    })
+  },
+
+  getUserInfo(){
+    var that = this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetUserInfo',
+        body: {
+          userid: util.userData.userID,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.setData({
+            uname: data.uname,
+            utelphone: data.utelphone,
+            mPound: data.mPound,
+            mWages: data.mWages,
+            yPound: data.yPound,
+            yWages: data.yWages
+          });
+        } else {
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        that.show("网络请求失败")
+      }
+    });
+  },
+
+  getCompanyList(){
+    var that = this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetCompanyList',
+        body: {
+          userid: util.userData.userID,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.setData({
+            companyList: data.self,
+            notCompanyList: data.notself
+          });
+        } else {
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        that.show("网络请求失败")
+      }
+    });
+  },
+
+  getCarList() {
+    var that = this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetCarList',
+        body: {
+          userid: util.userData.userID,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.setData({
+            headstockList: data.head,
+            trailerList: data.trailer,
+            length:data.length,
+          });
+        } else {
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        that.show("网络请求失败")
+      }
+    });
   },
 })

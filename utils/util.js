@@ -14,7 +14,7 @@ const formatNumber = n => {
 }
 
 const userData={
-  userID:"",
+  userID:"DEFAULTUID",
   userType:'',
   userStatus:'',
   driver:0,
@@ -22,6 +22,7 @@ const userData={
   singlePosition:'', //司机空闲中的经纬度上报定时ID
   longitude:0,
   latitude: 0,
+  openid:'',
   requestUrl:'http://127.0.0.1/mfunhcu/l1mainentry/cloud_callback_wechart_xcx_lsg.php',
   uploadFile:'http://127.0.0.1/upload/xcxUploadFile.php',
 };
