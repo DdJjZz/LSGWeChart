@@ -20,6 +20,8 @@ const userData={
   driver:0,
   repeatPosition:'', //任务路径经纬度上报信息定时ID
   singlePosition:'', //司机空闲中的经纬度上报定时ID
+  longitude:0,
+  latitude: 0,
   requestUrl:'http://127.0.0.1/mfunhcu/l1mainentry/cloud_callback_wechart_xcx_lsg.php',
   uploadFile:'http://127.0.0.1/upload/xcxUploadFile.php',
 };

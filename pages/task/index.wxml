@@ -199,7 +199,7 @@
     <text>\n</text>
     <text>\n</text>
     <text>\n</text>
-    <view>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX货物磷石膏12.85吨，以每吨100元的价格让乙方从XXXX运送到XXXX，安全到达后支付乙方1000元佣金</view>
+    <view>{{text_1}}{{type}}{{text_2}}{{price}}{{text_3}}</view>
   </view>
 </i-modal>
 <!--待接受任务的合同结束-->
@@ -242,7 +242,7 @@
     <text>\n</text>
     <text>\n</text>
     <text>\n</text>
-    <view>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX货物磷石膏12.85吨，以每吨100元的价格让乙方从XXXX运送到XXXX，安全到达后支付乙方1000元佣金</view>
+    <view>{{text_1}}{{type}}{{text_2}}{{price}}{{text_3}}</view>
   </view>
 </i-modal>
 <!--已接受任务的合同结束-->
@@ -288,7 +288,7 @@
   </view>
 </i-modal>
 
-<i-modal title="识别结果修改" visible='{{resultModalShow}}' width="300px" height="80px" actions="{{ actionsPicResult }}" bind:click="picResultModalClose">
+<i-modal title="识别结果修改" visible='{{resultModalShow}}' width="300px" height="80px" actions="{{ actionsPicResultChange }}" bind:click="picResultModalClose">
   <view style='background-color:#FFFFFF;'>
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">

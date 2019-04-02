@@ -21,6 +21,16 @@ Page({
   onLoad: function(options) {
     var that = this;
     var callBack=this.userCallbackInfoCheck;
+
+    wx.getLocation({
+      success: function (res) {
+        var longitude = res.longitude;
+        var latitude = res.latitude;
+        util.userData.longitude = longitude;
+        util.userData.latitude = latitude;
+      },
+    });
+
     wx.login({
       timeout: 10000,
       success(res) {
@@ -98,14 +108,12 @@ Page({
   userCallbackInfoCheck(resp){
     console.log(resp)
     if(resp.status=='true'){
+      util.userData.singlePosition = setInterval(this.getUserLoaction, 60000);
       util.userData.userID=resp.uid;
       util.userData.userType = resp.utype;
       util.userData.userStatus = resp.ustatus;
       util.userData.driver = resp.dtype;
       if(resp.utype==1){
-        if (resp.ustatus==3){
-          util.userData.singlePosition = setInterval(this.getUserLoaction, 60000);
-        }
         wx.redirectTo({
           url: '../task/index',
         });
@@ -125,18 +133,21 @@ Page({
   },
 
   getUserLoaction(){
+    var that=this;
     wx.getLocation({
       success: function(res) {
         var longitude=res.longitude;
         var latitude = res.latitude;
+        util.userData.longitude = longitude;
+        util.userData.latitude = latitude;
         wx.request({
           url: util.userData.requestUrl,
           data: {
-            action: 'UserLocation',
+            action: 'UploadUserLoaction',
             body:{
-              userid:util.userData.userID,
-              longitude: longitude,
-              latitude: latitude
+              userid: util.userData.userID,
+              longitude: util.userData.longitude,
+              latitude: util.userData.latitude,
             },
             type:'update'
           },
@@ -144,11 +155,25 @@ Page({
           head: {
             'content-type': 'application/json' // 默认值
           },
-          success(res){
-            console.log(res.data)
+          success({ data }) {
+            if(data.status=='true'){
+
+            }
+            else{
+              that.show("用户信息获取失败")
+            }
+            console.log(data)
+          },
+          fail() {
+            that.setData({
+              body: 'block'
+            });
+            that.show("请检查网络信息")
           }
         })
       },
-    })
+    });
+    console.log(util.userData.longitude);
+    console.log(util.userData.latitude);
   }
 })

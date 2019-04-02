@@ -32,6 +32,8 @@ Page({
       }
     ],
 
+    company: '',
+    driver: '',
 
     accepted_contract: false,
     accepted_actions: [{
@@ -44,7 +46,19 @@ Page({
         color: '#19be6b'
       },
       {
-        name: '取消'
+        name: '重选'
+      },
+      {
+        name: '关闭'
+      }
+    ],
+
+    actionsPicResultChange: [{
+        name: '确定',
+        color: '#19be6b'
+      },
+      {
+        name: '关闭'
       }
     ],
 
@@ -73,6 +87,7 @@ Page({
     videoModalShow: false,
     videoType: 'load',
     video_name: '',
+    video_length: 1,
     showVideo: false,
     actionsVideo: [{
       name: '关闭',
@@ -87,7 +102,13 @@ Page({
       }
     ],
     video_src: "",
-    newVideoSrc: ''
+    newVideoSrc: '',
+
+    text_1: '',
+    text_2: '',
+    text_3: '',
+    price: '',
+    type: '',
   },
 
   /**
@@ -105,7 +126,7 @@ Page({
         this.getAcceptedTaskInfo(util.userData.userID)
         break;
       case 3:
-        this.getUserTaskList(util.formatTime(new Date()), util.formatTime(Date.parse(new Date())-3600*24*7*1000))
+        this.getUserTaskList(util.formatTime(new Date()), util.formatTime(Date.parse(new Date()) - 3600 * 24 * 7 * 1000))
         break;
       default:
         break;
@@ -130,7 +151,7 @@ Page({
           padding_top: winHeight * 0.01 + 'px',
           modal_width: winWidth * 0.9 + 'px',
           modal_height: winHeight * 0.7 + 'px',
-          foot_height: winHeight * 0.09 + 'px',
+          foot_height: winHeight * 0.08 + 'px',
           height_size: winHeight * 0.08 + 24 + 'px',
         });
       },
@@ -288,6 +309,44 @@ Page({
       this.setData({
         accept_contract: true
       });
+      wx.request({
+        url: util.userData.requestUrl,
+        data: {
+          action: 'GetContractInfo',
+          body: {
+            taskid: this.data.wayBillId,
+          },
+          type: 'query'
+        },
+        method: "POST",
+        head: {
+          'content-type': 'application/json' // 默认值
+        },
+        success({
+          data
+        }) {
+          console.log(data);
+          if (data.status == 'true') {
+            that.setData({
+              text_1: data.text_1,
+              text_2: data.text_2,
+              text_3: data.text_3,
+              price: data.price,
+              type: data.type
+            });
+          } else {
+            that.show(data.msg);
+          }
+        },
+        fail() {
+          that.setData({
+            accept: "none",
+            accepted: "none",
+            task_list: "none",
+          });
+          that.show("网络请求失败")
+        }
+      })
     }
   },
 
@@ -359,9 +418,48 @@ Page({
   },
 
   showContractModalResp() {
+    var that = this
     this.setData({
       accepted_contract: !this.data.accepted_contract
     });
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetContractInfo',
+        body: {
+          taskid: this.data.wayBillId,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.setData({
+            text_1: data.text_1,
+            text_2: data.text_2,
+            text_3: data.text_3,
+            price: data.price,
+            type: data.type
+          });
+        } else {
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        that.setData({
+          accept: "none",
+          accepted: "none",
+          task_list: "none",
+        });
+        that.show("网络请求失败")
+      }
+    })
   },
 
   acceptedContractClose() {
@@ -377,13 +475,17 @@ Page({
       this.setData({
         picModalShow: true,
         picType: 'load',
-        picSrc: this.data.picLoadSrc
+        picSrc: this.data.picLoadSrc,
+        picPound: this.data.loadPound,
+        picDate: this.data.loadDate,
       });
     } else {
       this.setData({
         picModalShow: true,
         picType: 'unload',
-        picSrc: this.data.picUnloadSrc
+        picSrc: this.data.picUnloadSrc,
+        picPound: this.data.unloadPound,
+        picDate: this.data.unloadDate,
       });
     }
   },
@@ -406,30 +508,31 @@ Page({
           filePath: tempFilePaths[0],
           name: 'file',
           formData: {
-            'taskId': that.data.taskId,
+            'action': 'newPound',
+            'taskId': that.data.wayBillId,
             'type': that.data.picType
           },
           success(res) {
-            console.log(res)
+            console.log(res.data)
             wx.hideLoading();
             var resData = JSON.parse(res.data);
             if (resData.status === "true") {
               if (resData.type === 'load') {
                 that.setData({
-                  picLoadSrc: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path,
-                  picSrc: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path
-                  // picLoadSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path,
-                  // picSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path
+                  picLoadSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path,
+                  picSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path
+                  // picLoadSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path,
+                  // picSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path
                 });
               } else {
                 that.setData({
-                  picUnloadSrc: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path,
-                  picSrc: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path
-                  // picUnloadSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path,
-                  // picSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path
+                  picUnloadSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path,
+                  picSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path
+                  // picUnloadSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path,
+                  // picSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path
                 });
               }
-              that.poundPictureRecDistinguish("http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path, resData.type);
+              that.poundPictureRecDistinguish("http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path, resData.type);
             } else {
               wx.showToast({
                 title: resData.message,
@@ -456,18 +559,47 @@ Page({
     wx.showLoading({
       title: '信息识别中',
     })
-
-    setTimeout(function() {
-      wx.hideLoading()
-    }, 2000)
-
-    setTimeout(function() {
-      that.setData({
-        resultModalShow: true,
-        picPound: "15",
-        picDate: '2019-03-20',
-      })
-    }, 2000)
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetPoundPicInfo',
+        body: {
+          type: type,
+          taskid: that.data.wayBillId,
+          imgPath: filePath,
+        },
+        type: 'query',
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data)
+        if (data.status == 'true') {
+          wx.hideLoading()
+          that.setData({
+            resultModalShow: true,
+            picPound: data.pound,
+            picDate: data.date,
+          });
+        } else {
+          wx.hideLoading()
+          that.show("信息识别失败")
+        }
+      },
+      fail() {
+        wx.hideLoading()
+        that.setData({
+          accept: "none",
+          accepted: "none",
+          task_list: "none",
+        });
+        that.show("请检查网络信息")
+      }
+    })
   },
 
   picResultModalClose({
@@ -518,8 +650,23 @@ Page({
       this.setData({
         picModalShow: false,
       });
+    } else if (index == 1) {
+      if (this.data.picType == 'load') {
+        this.setData({
+          picSrc: "",
+          picLoadSrc: "",
+          loadPound: "",
+          loadDate: "",
+        });
+      } else {
+        this.setData({
+          picSrc: "",
+          picUnloadSrc: '',
+          unloadPound: "",
+          unloadDate: "",
+        });
+      }
     } else {
-      this.getPicturePoundAndDate(this.data.picType);
       this.setData({
         picModalShow: false,
       });
@@ -527,6 +674,7 @@ Page({
   },
 
   updatePicturePoundAndDate(type) {
+    var that = this
     if (type == "load") {
       this.setData({
         picModalShow: false,
@@ -542,25 +690,58 @@ Page({
         unloadDate: this.data.picDate
       });
     }
+
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'UploadPicInfo',
+        body: {
+          type: type,
+          taskid: that.data.wayBillId,
+          picSrc: that.data.picSrc,
+          picPound: that.data.picPound,
+          picDate: that.data.picDate,
+          longitude: util.userData.longitude,
+          latitude: util.userData.latitude,
+        },
+        type: 'query',
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        if (data.status == 'true') {
+          console.log(data)
+        } else {
+          that.show("信息上传失败！")
+        }
+      },
+      fail() {
+        that.show()
+      }
+    })
   },
 
-  getPicturePoundAndDate(type) {
-    if (type == "load") {
-      this.setData({
-        picModalShow: false,
-        loadPound: "",
-        picLoadSrc: '',
-        loadDate: ''
-      });
-    } else {
-      this.setData({
-        picModalShow: false,
-        unloadPound: "",
-        picUnloadSrc: "",
-        unloadDate: ""
-      });
-    }
-  },
+  // getPicturePoundAndDate(type) {
+  //   if (type == "load") {
+  //     this.setData({
+  //       picModalShow: false,
+  //       loadPound: "",
+  //       picLoadSrc: '',
+  //       loadDate: ''
+  //     });
+  //   } else {
+  //     this.setData({
+  //       picModalShow: false,
+  //       unloadPound: "",
+  //       picUnloadSrc: "",
+  //       unloadDate: ""
+  //     });
+  //   }
+  // },
 
   showResultPictureModal() {
     this.setData({
@@ -628,12 +809,15 @@ Page({
           filePath: tempFilePaths,
           name: 'file',
           formData: {
-            'taskId': that.data.taskId,
-            'type': that.data.videoType
+            'action': 'newVideo',
+            'taskId': that.data.wayBillId,
+            'type': that.data.videoType,
+            'length':that.data.video_length+1
           },
           success(res) {
             wx.hideLoading();
-            console.log(res)
+
+            console.log(res.data)
           },
           fail(res) {
             wx.hideLoading();
@@ -686,14 +870,6 @@ Page({
     });
   },
 
-  show(msg) {
-    wx.showToast({
-      title: msg,
-      icon: 'none',
-      duration: 2000
-    })
-  },
-
 
   //当用户的状态处于待接受任务的状态的时候
   getAcceptTaskInfo(userId) {
@@ -708,12 +884,16 @@ Page({
       head: {
         'content-type': 'application/json' // 默认值
       },
-      success({data}) {
+      success({
+        data
+      }) {
         console.log(data)
         if (data.status == 'true') {
           that.setData({
             wayBillId: data.wayBillId,
             wayBill: data.wayBill,
+            company: data.company,
+            driver: data.driver,
             accept: "block",
             accepted: "none",
             task_list: "none",
@@ -757,10 +937,13 @@ Page({
       head: {
         'content-type': 'application/json' // 默认值
       },
-      success({data}) {
+      success({
+        data
+      }) {
         console.log(data)
         if (data.status == 'true') {
           that.setData({
+            wayBillId: data.wayBillId,
             wayBillAccept: data.wayBillAccept,
             oldLoadVideoFilePath: data.oldLoadVideoFilePath,
             oldUnloadVideoFilePath: data.oldUnloadVideoFilePath,
@@ -770,6 +953,8 @@ Page({
             loadDate: data.loadDate,
             unloadPound: data.unloadPound,
             unloadDate: data.unloadDate,
+            company: data.company,
+            driver: data.driver,
             accept: "none",
             accepted: "block",
             task_list: "none",
@@ -799,7 +984,7 @@ Page({
   getUserTaskList(startTime, endTime) {
     console.log(startTime)
     console.log(endTime)
-    var that=this;
+    var that = this;
     wx.request({
       url: util.userData.requestUrl,
       data: {
@@ -821,7 +1006,7 @@ Page({
         console.log(data)
         if (data.status == 'true') {
           that.setData({
-            taskList:data.taskList,
+            taskList: data.taskList,
           });
         } else {
           that.show("请重启以查看待接受任务")
@@ -836,5 +1021,13 @@ Page({
         that.show("请检查网络信息")
       }
     });
-  }
+  },
+
+  show(msg) {
+    wx.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    })
+  },
 })
