@@ -9,7 +9,8 @@
     "pages/detail_task/index",
     "pages/index/index",
     "pages/accept_task/index",
-    "pages/list_task/index"
+    "pages/list_task/index",
+    "pages/refuse/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

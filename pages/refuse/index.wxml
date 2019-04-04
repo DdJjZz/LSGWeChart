@@ -1,0 +1,35 @@
+<!--pages/refuse/index.wxml-->
+<view class='title' style='height:{{head_size}};text-align：center'>
+  <image style='width:{{icon_size}};height:{{icon_size}};position:fixed;float: left;padding-left:10px' src='../../img/transport.svg'></image>
+  <text class='txt_title' style='font-size:{{text_size}};margin-left:{{margin_left}};padding-top:{{padding_top}}'>磷石膏物流大数据平台</text>
+</view>
+<view style='padding-top:{{head_size}};'>
+  <view>
+    <text>\n</text>
+  </view>
+  <i-collapse wx:if="{{refuseList.length>0}}" wx:for="{{refuseList}}" name="{{name}}" accordion>
+    <i-collapse-item title="史蒂夫·乔布斯" name="name1">
+      <view slot="content">
+        <view class='kuang_1' style='background-color:#FFFFFF'>
+          <view class="weui-form-preview__hd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">运单详情</view>
+              <view class="weui-form-preview__value_in-hd">{{item.}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view wx:for="{{wayBillAccept}}" wx:key="{{item.key}}" class="weui-form-preview__item">
+              <view>
+                <view class="weui-form-preview__label">{{item.key}}</view>
+                <view class="weui-form-preview__value">{{item.value}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </i-collapse-item>
+  </i-collapse>
+  <view class="page__bd page__bd_spacing" style='padding-top:10pt'>
+    <button class="weui-btn" type="primary" bindtap="releaseTask">返回到任务发布界面</button>
+  </view>
+</view>

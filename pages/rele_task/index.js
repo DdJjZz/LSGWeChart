@@ -435,4 +435,18 @@ Page({
       });
     }
   },
+
+  refusePage(){
+    wx.redirectTo({
+      url: '../refuse/index',
+    })
+  },
+
+  show(msg) {
+    wx.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    })
+  },
 })
