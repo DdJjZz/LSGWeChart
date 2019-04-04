@@ -89,7 +89,7 @@ Page({
           padding_top: winHeight * 0.01 + 'px',
           modal_width: winWidth * 0.9 + 'px',
           modal_height: winHeight * 0.7 + 'px',
-          foot_height: winHeight * 0.08 + 'px',
+          foot_height: winHeight * 0.09 + 'px',
           portrait_height: winHeight * 0.08 + 5 + 'px',
         });
       },
@@ -294,7 +294,7 @@ Page({
           title: '文件上传中',
         });
         wx.uploadFile({
-          url: 'http://127.0.0.1/upload/xcxUploadFile.php',
+          url: util.userData.uploadFile,
           // url: 'http://47.101.139.189/DJZTest/xcxUploadFile.php',
           filePath: tempFilePaths[0],
           name: 'file',

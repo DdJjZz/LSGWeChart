@@ -45,9 +45,19 @@
     </i-row>
     <i-row i-class="demo-row">
       <i-col span="24" i-class="demo-col">
+        <i-input title="装货详细地址" type='textarea' value='{{startDetail}}' placeholder="请输入装货的详细地址" bindchange='inputStartAddressChange' />
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
         <picker mode="region" bindchange="bindRegionChange" value="{{region}}" data-type='end'>
           <i-input title="卸货地点" placeholder="请选择终点区域" type='textarea' value='{{endAddress}}' disabled />
         </picker>
+      </i-col>
+    </i-row>
+    <i-row i-class="demo-row">
+      <i-col span="24" i-class="demo-col">
+        <i-input title="卸货详细地址" type='textarea' value='{{endDetail}}' placeholder="请输入卸货的详细地址" bindchange='inputEndAddressChange' />
       </i-col>
     </i-row>
     <!-- 可选 -->
@@ -97,9 +107,9 @@
 </view>
 <view class="foot" style='height:{{foot_height}}'>
   <i-tab-bar current="{{ current }}" bindchange="handleChange">
-    <i-tab-bar-item key="homepage" icon="document" current-icon="document_fill" title="任务"></i-tab-bar-item>
-    <i-tab-bar-item key="group" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
-    <i-tab-bar-item key="remind" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="document" icon="document" current-icon="document_fill" title="任务"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_1" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
+    <i-tab-bar-item key="prompt_2" icon="prompt" current-icon="prompt_fill" title="待开发"></i-tab-bar-item>
     <i-tab-bar-item key="mine" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
   </i-tab-bar>
 </view>

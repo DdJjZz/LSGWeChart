@@ -503,7 +503,7 @@ Page({
           title: '文件上传中',
         });
         wx.uploadFile({
-          url: 'http://127.0.0.1/upload/xcxUploadFile.php',
+          url: util.userData.uploadFile,
           // url: 'http://47.101.139.189/DJZTest/xcxUploadFile.php',
           filePath: tempFilePaths[0],
           name: 'file',
@@ -833,7 +833,7 @@ Page({
           title: '文件上传中',
         });
         wx.uploadFile({
-          url: 'http://127.0.0.1/upload/xcxUploadFile.php',
+          url: util.userData.uploadFile,
           // url: 'http://47.101.139.189/DJZTest/xcxUploadFile.php',
           filePath: tempFilePaths,
           name: 'file',
@@ -1154,8 +1154,6 @@ Page({
       }
     });
   },
-
-
 
   show(msg) {
     wx.showToast({

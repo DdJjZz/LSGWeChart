@@ -4,13 +4,10 @@
     "pages/rele_task/index",
     "pages/task/index",
     "pages/mine/index",
-    
     "pages/info/index",
     "pages/register/index",
     "pages/detail_task/index",
-    
     "pages/index/index",
-
     "pages/accept_task/index",
     "pages/list_task/index"
   ],

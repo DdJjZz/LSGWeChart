@@ -14,7 +14,7 @@ const formatNumber = n => {
 }
 
 const userData={
-  userID:"DEFAULTUID",
+  userID:"",
   userType:'',
   userStatus:'',
   driver:0,

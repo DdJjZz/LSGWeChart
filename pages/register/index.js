@@ -1,4 +1,5 @@
 // pages/register/index.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -10,7 +11,7 @@ Page({
     icon_size: '43px',
     margin_left: '70px',
     padding_top: '5px',
-    user_type: "1",
+    user_type: "",
     top: "100px",
     telephone: "",
     code: ""
@@ -21,16 +22,14 @@ Page({
    */
   onLoad: function(options) {
     var that = this;
-    // if(!(options['type'])){
-    //   console.log("kkkk");
-    // }
-    // that.setData({
-    //   user_type: ""
-    // });
-    if (that.data.user_type == "") {
+    if(!(options['type'])){
       wx.redirectTo({
         url: '../choice/index'
       });
+      this.show("参数错误")
+    }
+    else{
+      util.userData.userType = options['type']
     }
   },
 
@@ -101,6 +100,7 @@ Page({
   },
 
   registerButtonClick() {
+    var that=this;
     console.log(this.data.telephone)
     console.log(this.data.code)
     if (this.data.telephone == "") {
@@ -119,9 +119,46 @@ Page({
     //   })
     // }
 
-    if (this.data.code != "") {
-      wx.navigateTo({
-        url: '../info/index',
+    if (this.data.telephone != "") {
+
+      wx.request({
+        url: util.userData.requestUrl,
+        data: {
+          action: 'TelphoneRegi',
+          body: {
+            openid:util.userData.openid,
+            telphone: that.data.telephone,
+            utype: util.userData.userType,
+            longitude:util.userData.longitude,
+            latitude:util.userData.latitude
+          },
+          type: 'insert'
+        },
+        method: "POST",
+        head: {
+          'content-type': 'application/json' // 默认值
+        },
+        success({data}) {
+          console.log(data)
+          if (data.status == 'true') {
+            wx.redirectTo({
+              url: '../info/index?type='+data.utype+"&uid="+data.uid,
+            });
+          } else {
+            clearTimeout(util.userData.singlePosition);
+            wx.redirectTo({
+              url: '../choice/index',
+            });
+            that.show("网络请求失败");
+          }
+        },
+        fail() {
+          clearTimeout(util.userData.singlePosition);
+          wx.redirectTo({
+            url: '../choice/index',
+          });
+          that.show("网络请求失败");
+        }
       })
     }
   },

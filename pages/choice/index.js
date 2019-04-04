@@ -35,6 +35,7 @@ Page({
       timeout: 10000,
       success(res) {
         if (res.code) {
+          console.log(res)
           wx.request({
             url: util.userData.requestUrl,
             data: {
@@ -46,9 +47,11 @@ Page({
               'content-type': 'application/json' // 默认值
             },
             success({data}) {
+              console.log(data)
               callBack(data)
             },
-            fail() {
+            fail(res) {
+              console.log(res)
               that.setData({
                 body: 'block'
               });
@@ -57,7 +60,7 @@ Page({
           });
         }
       },
-      fail() {
+      fail(res) {
         that.setData({
           body: 'block'
         });
@@ -92,17 +95,9 @@ Page({
   choise(e) {
     util.userData.userType = parseInt(e.currentTarget.dataset.name);
     wx.redirectTo({
-      url: '../register/index'
+      url: '../register/index?type='+e.currentTarget.dataset.name
     });
     console.log(e.currentTarget.dataset.name);
-  },
-
-  show(msg) {
-    wx.showToast({
-      title: msg,
-      icon: 'none',
-      duration: 2000
-    })
   },
 
   userCallbackInfoCheck(resp){
@@ -177,5 +172,15 @@ Page({
     });
     console.log(util.userData.longitude);
     console.log(util.userData.latitude);
-  }
+  },
+
+  show(msg) {
+    wx.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    })
+  },
+
+
 })

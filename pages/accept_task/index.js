@@ -10,7 +10,6 @@ Page({
     icon_size: '43px',
     margin_left: '70px',
     padding_top: '5px',
-    value1: '12131321321',
     modal_height: '500px',
     modal_width: '200px',
     foot_size: '60px',
@@ -343,7 +342,7 @@ Page({
           title: '文件上传中',
         });
         wx.uploadFile({
-          url: 'http://127.0.0.1/upload/xcxUploadFile.php',
+          url: util.userData.uploadFile,
           filePath: tempFilePaths[0],
           name: 'file',
           formData: {
