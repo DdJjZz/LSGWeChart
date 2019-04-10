@@ -34,8 +34,8 @@ Page({
     trailerList: [],
     trailerValue: 0,
 
-    notCompanyList: [],
-    notCompanyValue: 0,
+    notCompanyList: [[],["集体司机",'个体司机']],
+    notCompanyValue: [0,0],
 
     picModalShow: false,
     resultModalShow: false,
@@ -228,7 +228,8 @@ Page({
     });
   },
   bindNotCompanyChange(e) {
-    var value = e.detail.value;
+    var companyValue = e.detail.value[0];
+    var choiseValue=e.detail.value[1];
     var that = this;
     wx.request({
       url: util.userData.requestUrl,
@@ -236,7 +237,8 @@ Page({
         action: 'BindingCompany',
         body: {
           userid: util.userData.userID,
-          cname:this.data.notCompanyList[value]
+          cname: that.data.notCompanyList[0][companyValue],
+          choise: choiseValue
         },
         type: 'query'
       },

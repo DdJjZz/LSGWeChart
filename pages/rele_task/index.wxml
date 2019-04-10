@@ -102,7 +102,7 @@
     <button class="weui-btn" type="primary" bindtap="releaseTask">发布任务</button>
   </view>
   <view class="page__bd page__bd_spacing" style='float:right;'>
-    <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" bindtap='refusePage'>前往已拒绝任务列表</navigator>
+    <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" url='../refuse/index'>前往已拒绝任务列表</navigator>
   </view>
 </view>
 <view class="foot" style='height:{{foot_height}}'>

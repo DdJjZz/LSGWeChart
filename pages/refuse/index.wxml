@@ -7,25 +7,35 @@
   <view>
     <text>\n</text>
   </view>
-  <i-collapse wx:if="{{refuseList.length>0}}" wx:for="{{refuseList}}" name="{{name}}" accordion>
-    <i-collapse-item title="史蒂夫·乔布斯" name="name1">
+  <i-collapse name="{{name}}">
+    <i-collapse-item wx:if="{{refuseList.length>0}}" wx:for="{{refuseList}}" wx:key="{{item.taskid}}" title="{{item.taskid}}" name="{{item.taskid}}">
       <view slot="content">
         <view class='kuang_1' style='background-color:#FFFFFF'>
           <view class="weui-form-preview__hd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">运单详情</view>
-              <view class="weui-form-preview__value_in-hd">{{item.}}</view>
+              <view class="weui-form-preview__value_in-hd">{{item.taskid}}</view>
             </view>
           </view>
           <view class="weui-form-preview__bd">
-            <view wx:for="{{wayBillAccept}}" wx:key="{{item.key}}" class="weui-form-preview__item">
+            <view wx:for="{{item.detail}}" wx:for-item="detail" wx:key="{{detail.key}}" class="weui-form-preview__item">
               <view>
-                <view class="weui-form-preview__label">{{item.key}}</view>
-                <view class="weui-form-preview__value">{{item.value}}</view>
+                <view class="weui-form-preview__label">{{detail.key}}</view>
+                <view class="weui-form-preview__value">{{detail.value}}</view>
               </view>
             </view>
           </view>
         </view>
+        <i-row i-class="demo-row light">
+          <i-col span="12" i-class="demo-col">
+            <picker bindchange="taskReSelection" data-taskid='{{item.taskid}}' value="{{index}}" range="{{licenseArray}}">
+              <i-button type="success" >重新选择</i-button>
+            </picker>
+          </i-col>
+          <i-col span="12" i-class="demo-col light">
+            <i-button bind:click="taskDelete" type="error" data-taskid='{{item.taskid}}'>删除任务</i-button>
+          </i-col>
+        </i-row>
       </view>
     </i-collapse-item>
   </i-collapse>

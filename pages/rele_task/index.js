@@ -436,11 +436,11 @@ Page({
     }
   },
 
-  refusePage(){
-    wx.redirectTo({
-      url: '../refuse/index',
-    })
-  },
+  // refusePage(){
+  //   wx.redirectTo({
+  //     url: '../refuse/index',
+  //   })
+  // },
 
   show(msg) {
     wx.showToast({

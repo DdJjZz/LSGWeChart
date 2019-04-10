@@ -10,7 +10,7 @@
 
     <i-row i-class="demo-row">
       <i-col span="20" i-class="demo-col">
-        <i-input value="{{ driverType }}" title="司机身份" type='textarea' placeholder="请选择司机身份" />
+        <i-input value="{{ driverType }}" title="司机身份" type='textarea' placeholder="请选择司机身份" disabled />
       </i-col>
       <i-col span="4" i-class="demo-col">
         <picker bindchange="bindDriverChange" value="{{driverTypeValue}}" range="{{driverTypeList}}">

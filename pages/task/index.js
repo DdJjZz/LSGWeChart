@@ -119,13 +119,31 @@ Page({
     this.showVideoContext = wx.createVideoContext('showVideo');
     switch (util.userData.userStatus) {
       case 1:
+        this.setData({
+          current_block: 'accept',
+          accept: "block",
+          accepted: "none",
+          task_list: "none"
+        });
         this.getAcceptTaskInfo(util.userData.userID)
         break;
       case 2:
+        this.setData({
+          current_block: 'accepted',
+          accept: "none",
+          accepted: "block",
+          task_list: "none"
+        });
         this.getAcceptedTaskInfo(util.userData.userID)
         break;
       case 3:
-        this.getUserTaskList(util.formatTime(new Date()), util.formatTime(Date.parse(new Date()) - 3600 * 24 * 7 * 1000))
+        this.setData({
+          current_block: 'task_list',
+          accept: "none",
+          accepted: "none",
+          task_list: "block"
+        });
+        this.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)), util.formatTime(new Date()))
         break;
       default:
         break;
@@ -205,7 +223,9 @@ Page({
     });
   },
 
-  handleChangeBlock({detail}) {
+  handleChangeBlock({
+    detail
+  }) {
     this.setData({
       current_block: detail.key
     });
@@ -244,7 +264,7 @@ Page({
         }
         break;
       case "task_list":
-        this.getUserTaskList(util.formatTime(new Date()), util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)))
+        this.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)),util.formatTime(new Date()))
         this.setData({
           accept: "none",
           accepted: "none",
@@ -270,6 +290,7 @@ Page({
         data: {
           action: 'AcceptTask',
           body: {
+            uid:util.userData.userID,
             taskid: this.data.wayBillId,
           },
           type: 'update'
@@ -283,7 +304,7 @@ Page({
         }) {
           console.log(data)
           if (data.status == 'true') {
-            util.userData.userStatus='2'
+            util.userData.userStatus = data.ustatus
             that.getAcceptedTaskInfo(util.userData.userID)
           } else {
             that.setData({
@@ -292,7 +313,7 @@ Page({
               task_list: "block",
               current_block: "task_list"
             });
-            that.show("网络请求失败")
+            that.show(data.msg)
           }
         },
         fail() {
@@ -351,12 +372,53 @@ Page({
 
   acceptContractClose(detail) {
     var index = detail.detail.index;
-    console.log(detail);
+    var that=this;
     this.setData({
       accept_contract: false,
     });
     if (index === 0) {
-      this.getAcceptedTaskInfo(util.userData.userID)
+      wx.request({
+        url: util.userData.requestUrl,
+        data: {
+          action: 'AcceptTask',
+          body: {
+            uid: util.userData.userID,
+            taskid: this.data.wayBillId,
+          },
+          type: 'update'
+        },
+        method: "POST",
+        head: {
+          'content-type': 'application/json' // 默认值
+        },
+        success({
+          data
+        }) {
+          console.log(data)
+          if (data.status == 'true') {
+            util.userData.userStatus = data.ustatus
+            that.getAcceptedTaskInfo(util.userData.userID)
+          } else {
+            that.setData({
+              accept: "none",
+              accepted: "none",
+              task_list: "block",
+              current_block: "task_list"
+            });
+            that.show(data.msg)
+            
+          }
+        },
+        fail() {
+          that.setData({
+            accept: "none",
+            accepted: "none",
+            task_list: "none",
+          });
+          that.getUserTaskList()
+          that.show("网络请求失败")
+        }
+      })
     }
   },
 
@@ -378,17 +440,20 @@ Page({
       success(res) {
         var data = res.data
         if (data.status == 'true') {
-          util.userData.userStatus = '4';
+          util.userData.userStatus = data.ustatus;
           that.setData({
             accept: "none",
             accepted: "none",
             task_list: "block",
             current_block: "task_list"
           });
-          that.getUserTaskList(util.formatTime(new Date()), util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)))
+          that.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)),util.formatTime(new Date()))
         } else {
-          that.show('网络请求失败')
+          that.show(data.msg)
         }
+      },
+      fail(){
+        that.show('网络请求失败')
       }
     })
   },
@@ -769,7 +834,7 @@ Page({
   },
 
   delVideo(e) {
-    var that=this
+    var that = this
     wx.request({
       url: util.userData.requestUrl,
       data: {
@@ -790,7 +855,7 @@ Page({
       }) {
         console.log(data)
         if (data.status == 'true') {
-          that.getTaskVideList();
+          that.getTaskVideoList();
         } else {
           that.show("删除失败")
         }
@@ -900,7 +965,7 @@ Page({
           wx.hideLoading()
           console.log(data);
           if (data.status == 'true') {
-            that.getTaskVideList()
+            that.getTaskVideoList()
           } else {
             that.show("信息上传失败！")
           }
@@ -919,7 +984,7 @@ Page({
     }
   },
 
-  getTaskVideList() {
+  getTaskVideoList() {
     var that = this;
     wx.request({
       url: util.userData.requestUrl,
@@ -942,7 +1007,7 @@ Page({
           that.setData({
             oldLoadVideoFilePath: data.load,
             oldUnloadVideoFilePath: data.unload,
-            video_length:data.length
+            video_length: data.length
           });
         } else {
           wx.hideLoading()
@@ -965,7 +1030,7 @@ Page({
   },
 
   taskReadyDone() {
-    var that=this;
+    var that = this;
     wx.request({
       url: util.userData.requestUrl,
       data: {
@@ -979,17 +1044,19 @@ Page({
       head: {
         'content-type': 'application/json' // 默认值
       },
-      success({data}) {
+      success({
+        data
+      }) {
         console.log(data);
         if (data.status == 'true') {
-          util.userData.userStatus='3',
-          that.setData({
-            accept: "none",
-            accepted: "none",
-            task_list: "block",
-            current_block: "task_list"
-          });
-          that.getUserTaskList(util.formatTime(new Date()), util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)))
+          util.userData.userStatus = '3',
+            that.setData({
+              accept: "none",
+              accepted: "none",
+              task_list: "block",
+              current_block: "task_list"
+            });
+          that.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)),util.formatTime(new Date()))
         } else {
           that.show("提交失败，请重试")
         }
@@ -999,7 +1066,7 @@ Page({
         that.show("请检查网络信息")
       }
     })
-    
+
   },
 
 
@@ -1021,6 +1088,7 @@ Page({
       }) {
         console.log(data)
         if (data.status == 'true') {
+          util.userData.driver = data.dtype
           that.setData({
             wayBillId: data.wayBillId,
             wayBill: data.wayBill,
@@ -1069,9 +1137,7 @@ Page({
       head: {
         'content-type': 'application/json' // 默认值
       },
-      success({
-        data
-      }) {
+      success({data}) {
         console.log(data)
         if (data.status == 'true') {
           that.setData({
@@ -1087,6 +1153,7 @@ Page({
             unloadDate: data.unloadDate,
             company: data.company,
             driver: data.driver,
+            video_length:data.length,
             accept: "none",
             accepted: "block",
             task_list: "none",
@@ -1099,7 +1166,7 @@ Page({
             task_list: "block",
             current_block: "task_list"
           });
-          that.show("请重启以查看待接受任务")
+          that.show(data.msg)
         }
       },
       fail() {

@@ -171,7 +171,7 @@ Page({
         console.log(data);
         if (data.status == 'true') {
           that.setData({
-            companyList: data.notself
+            companyList: data.notself[0]
           });
         } else {
           that.show(data.msg);
@@ -207,6 +207,11 @@ Page({
     if (value == 1) {
       this.setData({
         companyDisplay: 'block'
+      });
+    }
+    else{
+      this.setData({
+        companyDisplay: 'none'
       });
     }
   },
@@ -495,6 +500,9 @@ Page({
 
   poundPictureRecDistinguish(src, type) {
     var that = this;
+    wx.showLoading({
+      title: '信息识别中',
+    })
     wx.request({
       url: util.userData.requestUrl,
       data: {
@@ -512,6 +520,7 @@ Page({
       success({
         data
       }) {
+        wx.hideLoading();
         console.log(data)
         if (data.status == 'true') {
           console.log(data)

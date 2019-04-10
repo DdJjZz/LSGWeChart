@@ -2,16 +2,10 @@
   "navigationBarTitleText": "任务发布",
   "usingComponents": {
     "i-panel": "../../dist/panel/index",
-    "i-tab-bar": "../../dist/tab-bar/index",
-    "i-tab-bar-item": "../../dist/tab-bar-item/index",
-    "i-swipeout": "../../dist/swipeout/index",
-    "i-cell-group": "../../dist/cell-group/index",
-    "i-cell": "../../dist/cell/index",
-    "i-card": "../../dist/card/index",
-    "i-icon": "../../dist/icon/index",
-    "i-action-sheet": "../../dist/action-sheet/index",
-
+    "i-row": "../../dist/row/index",
+    "i-col": "../../dist/col/index",
     "i-collapse": "../../dist/collapse/index",
-    "i-collapse-item": "../../dist/collapse-item/index"
+    "i-collapse-item": "../../dist/collapse-item/index",
+    "i-button": "../../dist/button/index"
   }
 }

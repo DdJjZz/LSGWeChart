@@ -35,7 +35,7 @@
                       </picker>
                     </i-col>
                     <i-col span="2" i-class="demo-col light">
-                      <picker bindchange="bindNotCompanyChange" value="{{notCompanyValue}}" range="{{notCompanyList}}">
+                      <picker mode="multiSelector" bindchange="bindNotCompanyChange" value="{{notCompanyValue}}" range="{{notCompanyList}}">
                         <i-icon type="add" size="22" color="#09BB07"></i-icon>
                       </picker>
                     </i-col>

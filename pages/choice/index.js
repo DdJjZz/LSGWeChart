@@ -12,7 +12,7 @@ Page({
     icon_size: '43px',
     margin_left: '70px',
     padding_top: '5px',
-    body:'none'
+    body: 'none'
   },
 
   /**
@@ -20,10 +20,10 @@ Page({
    */
   onLoad: function(options) {
     var that = this;
-    var callBack=this.userCallbackInfoCheck;
+    var callBack = this.userCallbackInfoCheck;
 
     wx.getLocation({
-      success: function (res) {
+      success: function(res) {
         var longitude = res.longitude;
         var latitude = res.latitude;
         util.userData.longitude = longitude;
@@ -39,14 +39,16 @@ Page({
           wx.request({
             url: util.userData.requestUrl,
             data: {
-              action:'ChekOpenid',
-              code:res.code
+              action: 'ChekOpenid',
+              code: res.code
             },
             method: "POST",
             head: {
               'content-type': 'application/json' // 默认值
             },
-            success({data}) {
+            success({
+              data
+            }) {
               console.log(data)
               callBack(data)
             },
@@ -95,44 +97,48 @@ Page({
   choise(e) {
     util.userData.userType = parseInt(e.currentTarget.dataset.name);
     wx.redirectTo({
-      url: '../register/index?type='+e.currentTarget.dataset.name
+      url: '../register/index?type=' + e.currentTarget.dataset.name
     });
     console.log(e.currentTarget.dataset.name);
   },
 
-  userCallbackInfoCheck(resp){
+  userCallbackInfoCheck(resp) {
     console.log(resp)
     util.userData.singlePosition = setInterval(this.getUserLoaction, 60000);
-    if(resp.status=='true'){
-      util.userData.userID=resp.uid;
+    if (resp.status == 'true') {
+      util.userData.userID = resp.uid;
       util.userData.userType = resp.utype;
-      util.userData.userStatus = resp.ustatus;
-      util.userData.driver = resp.dtype;
-      if(resp.utype==1){
+      util.userData.userStatus = resp.ustatus
+      if (resp.istatus == true) {
+        if (resp.utype == 1) {
+          wx.redirectTo({
+            url: '../task/index',
+          });
+        } else {
+          wx.redirectTo({
+            url: '../rele_task/index',
+          })
+        }
+      }
+      else {
         wx.redirectTo({
-          url: '../task/index',
+          url: '../info/index?type=' + util.userData.userType + "&uid=" + util.userData.userID,
         });
       }
-      else{
-        wx.redirectTo({
-          url: '../rele_task/index',
-        })
-      }
-    }
-    else{
+    } else {
       this.setData({
-        body:'block'
+        body: 'block'
       });
-      util.userData.openid=resp.openid
+      util.userData.openid = resp.openid
       this.show(resp.message)
     }
   },
 
-  getUserLoaction(){
-    var that=this;
+  getUserLoaction() {
+    var that = this;
     wx.getLocation({
       success: function(res) {
-        var longitude=res.longitude;
+        var longitude = res.longitude;
         var latitude = res.latitude;
         util.userData.longitude = longitude;
         util.userData.latitude = latitude;
@@ -140,23 +146,24 @@ Page({
           url: util.userData.requestUrl,
           data: {
             action: 'UploadUserLoaction',
-            body:{
+            body: {
               userid: util.userData.userID,
-              userStatus:util.userData.userStatus,
+              userStatus: util.userData.userStatus,
               longitude: util.userData.longitude,
               latitude: util.userData.latitude,
             },
-            type:'update'
+            type: 'update'
           },
           method: "POST",
           head: {
             'content-type': 'application/json' // 默认值
           },
-          success({ data }) {
-            if(data.status=='true'){
+          success({
+            data
+          }) {
+            if (data.status == 'true') {
               util.userData.userStatus = data.userStatus
-            }
-            else{
+            } else {
               that.show("用户信息获取失败")
             }
             console.log(data)
@@ -181,6 +188,4 @@ Page({
       duration: 2000
     })
   },
-
-
 })

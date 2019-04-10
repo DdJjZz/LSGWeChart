@@ -14,13 +14,16 @@ Page({
     padding_top: '5px',
     name: 'name1',
     refuseList:[],
+    licenseArray:[],
+    index:0,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getAllRefuseTaskList()
+    this.getAllRefuseTaskList();
+    this.getFreePlateList();
     console.log(util.formatTime(new Date()))
     console.log(util.userData.userID)
   },
@@ -108,9 +111,46 @@ Page({
       success({data}) {
         console.log(data);
         if (data.status == 'true') {
+          console.log(data.refuseList);
+          console.log(data.refuseList[0].taskid);
           that.setData({
+            name:data.refuseList[0].taskid,
             refuseList: data.refuseList,
           })
+        } else {
+          that.show("部分信息获取失败，请检查状态");
+        }
+      },
+      fail() {
+        that.show("网络请求失败")
+      }
+    })
+  },
+
+  getFreePlateList(){
+    var that = this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'GetFreePlateList',
+        body: {
+          uid: util.userData.userID,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.setData({
+            licenseArray: data.list
+          })
+
         } else {
           that.show("部分信息获取失败，请检查状态");
         }
@@ -128,4 +168,83 @@ Page({
       duration: 2000
     })
   },
+
+  taskReSelection(e){
+    console.log(e);
+    var index=e.detail.value;
+    var taskid=e.target.dataset.taskid;
+    var palte = this.data.licenseArray[index]
+    var that = this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'TaskReSelection',
+        body: {
+          uid: util.userData.userID,
+          taskid: taskid,
+          palte: palte,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.getAllRefuseTaskList();
+          that.getFreePlateList();
+          that.show("重新发布成功")
+        } else {
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        that.show("网络请求失败")
+      }
+    });
+    
+  },
+  taskDelete(e) {
+    var taskid = e.target.dataset.taskid;
+    var that=this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'DeleteTask',
+        body: {
+          uid: util.userData.userID,
+          taskid: taskid,
+        },
+        type: 'query'
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({
+        data
+      }) {
+        console.log(data);
+        if (data.status == 'true') {
+          that.getAllRefuseTaskList();
+          that.getFreePlateList();
+          that.show("任务已删除")
+        } else {
+          that.show(data.msg);
+        }
+      },
+      fail() {
+        that.show("网络请求失败")
+      }
+    });
+  },
+  releaseTask(){
+    wx.navigateBack({
+      delta:1,
+    })
+  }
 })
