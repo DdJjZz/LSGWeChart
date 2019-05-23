@@ -1,0 +1,15 @@
+<view class="page">
+  <view class="page__hd" style='backoudColor:black'>
+    <view class="page__title">{{messageTitle}}</view>
+  </view>
+  <view class="page__bd page__bd_spacing">
+    <view wx:for="{{messageBody}}" wx:key="{{item.id}}">
+      <view style='text-overflow:ellipsis;word-wrap:break-word'>
+        {{item.describe}}
+      </view>
+      <view style='text-align:center' wx:if="{{item.picSrc}}">
+        <image style="width: 100%; background-color: #FFFFFF;" mode="widthFix" src="{{item.picSrc}}"></image>
+      </view>
+    </view>
+  </view>
+</view>

@@ -49,9 +49,23 @@ Page({
     yPound: "",
     yWages: "",
 
-    actionsPicResult: [{
+    actionsPicResult: [
+      {
         name: '确定',
         color: '#19be6b'
+      },
+      {
+        name: '取消'
+      }
+    ],
+
+    actionsPic: [
+      {
+        name: '确定',
+        color: '#19be6b'
+      },
+      {
+        name: '重选',
       },
       {
         name: '取消'
@@ -313,7 +327,7 @@ Page({
             if (resData.status === "true") {
               if (resData.type === 'head') {
                 that.setData({
-                  picSrc: "http://127.0.0.1/upload/CAR/" + that.data.userid + "/" + resData.path
+                  picSrc: util.userData.filePath + "/CAR/" + that.data.userid + "/" + resData.path
                   // picLoadSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path,
                   // picSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path
                 });
@@ -324,7 +338,7 @@ Page({
                   // picSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path
                 });
               }
-              that.poundPictureRecDistinguish("http://127.0.0.1/upload/CAR/" + that.data.userid + "/" + resData.path, resData.type);
+              that.poundPictureRecDistinguish(util.userData.filePath + "/CAR/"  + that.data.userid + "/" + resData.path, resData.type);
             } else {
               wx.showToast({
                 title: resData.message,
@@ -355,9 +369,10 @@ Page({
     wx.request({
       url: util.userData.requestUrl,
       data: {
-        action: 'LicenseDistinguish',
+        action: 'PicRecognition',
         body: {
-          filePath: filePath,
+          picSrc: filePath,
+          type:type,
         },
         type: 'query'
       },
@@ -373,7 +388,7 @@ Page({
           wx.hideLoading()
           that.setData({
             resultModalShow: true,
-            licensePlate: data.plate,
+            licensePlate: data.value,
           })
         } else {
           wx.hideLoading()
@@ -414,24 +429,6 @@ Page({
     var index = e.detail.index;
     if (index == 0) {
       var type = this.data.picType;
-      // if (type == "head") {
-      //   var headstockList = this.data.headstockList;
-      //   headstockList.push(this.data.licensePlate)
-      //   this.setData({
-      //     picSrc: '',
-      //     picModalShow: false,
-      //     headstockList: headstockList
-      //   });
-      // } else {
-      //   var trailerList = this.data.trailerList;
-      //   trailerList.push(this.data.licensePlate)
-      //   this.setData({
-      //     picSrc: '',
-      //     picModalShow: false,
-      //     trailerList: trailerList
-      //   });
-      // }
-
       wx.request({
         url: util.userData.requestUrl,
         data: {
@@ -477,7 +474,14 @@ Page({
           that.show("网络请求失败")
         }
       });
-    } else {
+    }
+    else if(index==1){
+      this.setData({
+        licensePlate: "",
+        picSrc: '',
+      });
+    } 
+    else {
       this.setData({
         picModalShow: false,
         licensePlate: "",

@@ -4,6 +4,7 @@
 </view>
 <view style='padding-top:280px;display:{{body}}'>
   <view class="page__bd page__bd_spacing">
+    <button class="weui-btn" type="primary" bindtap="choise">公司入驻</button>
     <button class="weui-btn" type="primary" data-name='1' bindtap="choise">我是司机</button>
     <button class="weui-btn" type="warn" data-name='2' bindtap="choise">我是物流公司</button>
   </view>

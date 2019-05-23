@@ -1,6 +1,9 @@
 {
   "pages": [
     "pages/choice/index",
+    "pages/entry/index",
+    "pages/detail/index",
+    
     "pages/rele_task/index",
     "pages/task/index",
     "pages/mine/index",
@@ -11,6 +14,7 @@
     "pages/accept_task/index",
     "pages/list_task/index",
     "pages/refuse/index"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",

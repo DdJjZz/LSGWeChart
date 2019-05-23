@@ -13,15 +13,15 @@ Page({
     margin_left: '70px',
     padding_top: '5px',
     name: 'name1',
-    refuseList:[],
-    licenseArray:[],
-    index:0,
+    refuseList: [],
+    licenseArray: [],
+    index: 0,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.getAllRefuseTaskList();
     this.getFreePlateList();
     console.log(util.formatTime(new Date()))
@@ -31,7 +31,7 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
     var that = this;
     wx.getSystemInfo({
       success(res) {
@@ -54,46 +54,46 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
 
-  getAllRefuseTaskList(){
+  getAllRefuseTaskList() {
     var that = this;
     wx.request({
       url: util.userData.requestUrl,
@@ -108,15 +108,17 @@ Page({
       head: {
         'content-type': 'application/json' // 默认值
       },
-      success({data}) {
+      success({
+        data
+      }) {
         console.log(data);
         if (data.status == 'true') {
-          console.log(data.refuseList);
-          console.log(data.refuseList[0].taskid);
-          that.setData({
-            name:data.refuseList[0].taskid,
-            refuseList: data.refuseList,
-          })
+          if (data.refuseList.length > 0) {
+            that.setData({
+              name: data.refuseList[0].taskid,
+              refuseList: data.refuseList,
+            })
+          }
         } else {
           that.show("部分信息获取失败，请检查状态");
         }
@@ -127,7 +129,7 @@ Page({
     })
   },
 
-  getFreePlateList(){
+  getFreePlateList() {
     var that = this;
     wx.request({
       url: util.userData.requestUrl,
@@ -169,10 +171,10 @@ Page({
     })
   },
 
-  taskReSelection(e){
+  taskReSelection(e) {
     console.log(e);
-    var index=e.detail.value;
-    var taskid=e.target.dataset.taskid;
+    var index = e.detail.value;
+    var taskid = e.target.dataset.taskid;
     var palte = this.data.licenseArray[index]
     var that = this;
     wx.request({
@@ -182,7 +184,7 @@ Page({
         body: {
           uid: util.userData.userID,
           taskid: taskid,
-          palte: palte,
+          plate: palte,
         },
         type: 'query'
       },
@@ -206,11 +208,11 @@ Page({
         that.show("网络请求失败")
       }
     });
-    
+
   },
   taskDelete(e) {
     var taskid = e.target.dataset.taskid;
-    var that=this;
+    var that = this;
     wx.request({
       url: util.userData.requestUrl,
       data: {
@@ -242,9 +244,9 @@ Page({
       }
     });
   },
-  releaseTask(){
+  releaseTask() {
     wx.navigateBack({
-      delta:1,
+      delta: 1,
     })
   }
 })

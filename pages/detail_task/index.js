@@ -94,7 +94,7 @@ Page({
             driver: data.driver,
           });
         } else {
-          that.show("请重启以查看待接受任务")
+          that.show(data.msg)
         }
       },
       fail() {

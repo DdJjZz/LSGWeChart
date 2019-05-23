@@ -356,16 +356,16 @@ Page({
             if (resData.status === "true") {
               if (resData.type === 'load') {
                 that.setData({
-                  picLoad: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path,
-                  picSrc: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path
+                  picLoad: util.userData.filePath  + that.data.taskId + "/" + resData.path,
+                  picSrc: util.userData.filePath  + that.data.taskId + "/" + resData.path
                 });
               } else {
                 that.setData({
-                  picUnload: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path,
-                  picSrc: "http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path
+                  picUnload: util.userData.filePath  + that.data.taskId + "/" + resData.path,
+                  picSrc: util.userData.filePath + that.data.taskId + "/" + resData.path
                 });
               }
-              that.poundPictureRecDistinguish("http://127.0.0.1/upload/" + that.data.taskId + "/" + resData.path, resData.type);
+              that.poundPictureRecDistinguish(util.userData.filePath + that.data.taskId + "/" + resData.path, resData.type);
             } else {
               wx.showToast({
                 title: resData.message,

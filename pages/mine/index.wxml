@@ -34,11 +34,11 @@
                         <text style='color:#576B95'>{{companyList[companyValue]}}</text>
                       </picker>
                     </i-col>
-                    <i-col span="2" i-class="demo-col light">
+                    <!-- <i-col span="2" i-class="demo-col light">
                       <picker mode="multiSelector" bindchange="bindNotCompanyChange" value="{{notCompanyValue}}" range="{{notCompanyList}}">
                         <i-icon type="add" size="22" color="#09BB07"></i-icon>
                       </picker>
-                    </i-col>
+                    </i-col> -->
                   </i-row>
                 </view>
               </view>
@@ -135,7 +135,7 @@
 
 
 
-<i-modal title="{{modal_title}}" visible="{{picModalShow}}" width="300px" height="320px" actions="{{ actionsPicResult }}" bind:click="picModalClose">
+<i-modal title="{{modal_title}}" visible="{{picModalShow}}" width="300px" height="340px" actions="{{ actionsPic }}" bind:click="picModalClose">
   <view class="page__bd page__bd_spacing" style='word-wrap:break-word'>
     <view class='kuang_2' style='height:250px;weight:100%;'>
       <i-icon wx:if="{{picSrc===''}}" type="add" size="60" color="#dddee1" bindtap='chooseImage'></i-icon>

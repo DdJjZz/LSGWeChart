@@ -21,7 +21,6 @@ Page({
   onLoad: function(options) {
     var that = this;
     var callBack = this.userCallbackInfoCheck;
-
     wx.getLocation({
       success: function(res) {
         var longitude = res.longitude;

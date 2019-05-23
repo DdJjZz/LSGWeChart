@@ -7,7 +7,6 @@
     完善信息需要使用身份证、驾驶证和行驶证等证件
   </i-notice-bar>
   <i-panel title="请选择司机类别">
-
     <i-row i-class="demo-row">
       <i-col span="20" i-class="demo-col">
         <i-input value="{{ driverType }}" title="司机身份" type='textarea' placeholder="请选择司机身份" disabled />
@@ -18,7 +17,7 @@
         </picker>
       </i-col>
       <i-col span="20" i-class="demo-col" style='display:{{companyDisplay}}'>
-        <i-input value="{{ company }}" title="公司选择" type='textarea' placeholder="请选择挂靠公司" />
+        <i-input value="{{ company }}" title="公司选择" type='textarea' placeholder="请选择挂靠公司" disabled/>
       </i-col>
       <i-col span="4" i-class="demo-col" style='display:{{companyDisplay}}'>
         <picker bindchange="bindCompanyChange" value="{{companyValue}}" range="{{companyList}}">
@@ -41,7 +40,7 @@
     <!-- 加一个角色选择框 -->
     <i-row i-class="demo-row">
       <i-col span="20" i-class="demo-col">
-        <i-input value="{{ headstock }}" title="车牌号" type='textarea' placeholder="请输入车头牌号" />
+        <i-input value="{{ headstock }}" title="车牌号" type='textarea' placeholder="请输入车头牌号" bindchange="headStockChange" />
       </i-col>
       <i-col span="4" i-class="demo-col">
         <i-icon type="camera" size="35" color="#09bb07" data-type='head' bindtap='picModalShow'></i-icon>
@@ -49,7 +48,7 @@
     </i-row>
     <i-row i-class="demo-row">
       <i-col span="20" i-class="demo-col">
-        <i-input value="{{ trailer }}" title="挂车号" type='textarea' placeholder="请输入挂车牌号" />
+        <i-input value="{{ trailer }}" title="挂车号" type='textarea' placeholder="请输入挂车牌号"  bindchange="trailerChange"/>
       </i-col>
       <i-col span="4" i-class="demo-col">
         <i-icon type="camera" size="35" color="#09bb07" data-type='trailer' bindtap='picModalShow'></i-icon>
@@ -60,7 +59,7 @@
         <i-input value="{{ license }}" title="驾驶证号" type='textarea' placeholder="请输入驾驶证号" />
       </i-col>
       <i-col span="4" i-class="demo-col">
-        <i-icon type="camera" size="35" color="#09bb07" data-type='license' bindtap='picModalShow'></i-icon>
+        <i-icon type="camera" size="35" color="#09bb07" data-type='license' bindtap='picModalShow' bindchange="licenseChange"></i-icon>
       </i-col>
     </i-row>
     <i-row i-class="demo-row">
@@ -68,7 +67,7 @@
         <i-input value="{{ operation }}" title="营运证号" type='textarea' placeholder="请输入营运证号" />
       </i-col>
       <i-col span="4" i-class="demo-col">
-        <i-icon type="camera" size="35" color="#09bb07" data-type='operation' bindtap='picModalShow'></i-icon>
+        <i-icon type="camera" size="35" color="#09bb07" data-type='operation' bindtap='picModalShow' bindchange="operationChange"></i-icon>
       </i-col>
     </i-row>
 

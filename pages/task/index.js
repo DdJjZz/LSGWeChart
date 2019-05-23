@@ -264,7 +264,7 @@ Page({
         }
         break;
       case "task_list":
-        this.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)),util.formatTime(new Date()))
+        this.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)), util.formatTime(new Date()))
         this.setData({
           accept: "none",
           accepted: "none",
@@ -290,7 +290,7 @@ Page({
         data: {
           action: 'AcceptTask',
           body: {
-            uid:util.userData.userID,
+            uid: util.userData.userID,
             taskid: this.data.wayBillId,
           },
           type: 'update'
@@ -372,7 +372,7 @@ Page({
 
   acceptContractClose(detail) {
     var index = detail.detail.index;
-    var that=this;
+    var that = this;
     this.setData({
       accept_contract: false,
     });
@@ -406,7 +406,7 @@ Page({
               current_block: "task_list"
             });
             that.show(data.msg)
-            
+
           }
         },
         fail() {
@@ -447,12 +447,12 @@ Page({
             task_list: "block",
             current_block: "task_list"
           });
-          that.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)),util.formatTime(new Date()))
+          that.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)), util.formatTime(new Date()))
         } else {
           that.show(data.msg)
         }
       },
-      fail(){
+      fail() {
         that.show('网络请求失败')
       }
     })
@@ -584,20 +584,16 @@ Page({
             if (resData.status === "true") {
               if (resData.type === 'load') {
                 that.setData({
-                  picLoadSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path,
-                  picSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path
-                  // picLoadSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path,
-                  // picSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path
+                  picLoadSrc: util.userData.filePath+"/POUND/" + that.data.wayBillId + "/" + resData.path,
+                  picSrc: util.userData.filePath +"/POUND/" + that.data.wayBillId + "/" + resData.path
                 });
               } else {
                 that.setData({
-                  picUnloadSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path,
-                  picSrc: "http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path
-                  // picUnloadSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path,
-                  // picSrc: "http://47.101.139.189/DJZTest/POUND/" + that.data.wayBillId + "/" + resData.path
+                  picUnloadSrc: util.userData.filePath + "/POUND/" +that.data.wayBillId + "/" + resData.path,
+                  picSrc: util.userData.filePath + "/POUND/" +  that.data.wayBillId + "/" + resData.path
                 });
               }
-              that.poundPictureRecDistinguish("http://127.0.0.1/upload/POUND/" + that.data.wayBillId + "/" + resData.path, resData.type);
+              that.poundPictureRecDistinguish(util.userData.filePath + "/POUND/" + that.data.wayBillId + "/" + resData.path, resData.type);
             } else {
               wx.showToast({
                 title: resData.message,
@@ -653,6 +649,9 @@ Page({
         } else {
           wx.hideLoading()
           that.show("信息识别失败")
+          that.setData({
+            resultModalShow: true,
+          });
         }
       },
       fail() {
@@ -913,7 +912,7 @@ Page({
             console.log(res.data);
             var path = JSON.parse(res.data).path
             that.setData({
-              video_src: "http://127.0.0.1/upload/VIDEO/" + that.data.wayBillId + "/" + path
+              video_src: util.userData.filePath + "/VIDEO/" + that.data.wayBillId + "/" + path
             });
           },
           fail(res) {
@@ -1011,7 +1010,7 @@ Page({
           });
         } else {
           wx.hideLoading()
-          that.show("信息上传失败！")
+          that.show("视频列表获取失败")
         }
       },
       fail() {
@@ -1031,6 +1030,12 @@ Page({
 
   taskReadyDone() {
     var that = this;
+    if(this.data.picLoadSrc==""){
+      this.show("请上传装货磅单图片")
+    }
+    else if(this.data.picUnloadSrc==""){
+      this.show("请上传卸货磅单图片")
+    }
     wx.request({
       url: util.userData.requestUrl,
       data: {
@@ -1049,14 +1054,15 @@ Page({
       }) {
         console.log(data);
         if (data.status == 'true') {
-          util.userData.userStatus = '3',
-            that.setData({
-              accept: "none",
-              accepted: "none",
-              task_list: "block",
-              current_block: "task_list"
-            });
-          that.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)),util.formatTime(new Date()))
+          util.userData.userStatus = data.ustatus;
+          that.getUserTaskList(util.formatTime(new Date(Date.parse(new Date()) - 3600 * 24 * 7 * 1000)), util.formatTime(new Date()))
+          that.setData({
+            accept: "none",
+            accepted: "none",
+            task_list: "block",
+            current_block: "task_list"
+          });
+          
         } else {
           that.show("提交失败，请重试")
         }
@@ -1137,7 +1143,9 @@ Page({
       head: {
         'content-type': 'application/json' // 默认值
       },
-      success({data}) {
+      success({
+        data
+      }) {
         console.log(data)
         if (data.status == 'true') {
           that.setData({
@@ -1153,7 +1161,7 @@ Page({
             unloadDate: data.unloadDate,
             company: data.company,
             driver: data.driver,
-            video_length:data.length,
+            video_length: data.length,
             accept: "none",
             accepted: "block",
             task_list: "none",

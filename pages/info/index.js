@@ -202,6 +202,7 @@ Page({
     var value = e.detail.value;
     console.log(value)
     this.setData({
+      driverTypeValue:value,
       driverType: this.data.driverTypeList[value]
     });
     if (value == 1) {
@@ -256,6 +257,8 @@ Page({
     }
     this.setData({
       picType: type,
+      driver:"none",
+      staff:"none",
       picModalShow: true,
     });
   },
@@ -333,50 +336,50 @@ Page({
           name: 'file',
           formData: data,
           success(res) {
-            console.log(res.data)
+            console.log(res)
             wx.hideLoading();
             var resData = JSON.parse(res.data);
             if (resData.status === "true") {
               switch (resData.type) {
                 case "head": //车头
                   that.setData({
-                    headstockSrc: 'http://127.0.0.1/upload/CAR/' + util.userData.userID + "/" + resData.path,
-                    picSrc: 'http://127.0.0.1/upload/CAR/' + util.userData.userID + "/" + resData.path,
+                    headstockSrc: util.userData.filePath + "/CAR/" + util.userData.userID + "/" + resData.path,
+                    picSrc: util.userData.filePath + "/CAR/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/CAR/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/CAR/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 case "trailer": //挂车
                   that.setData({
-                    trailerSrc: 'http://127.0.0.1/upload/CAR/' + util.userData.userID + "/" + resData.path,
-                    picSrc: 'http://127.0.0.1/upload/CAR/' + util.userData.userID + "/" + resData.path,
+                    trailerSrc: util.userData.filePath + "/CAR/" + util.userData.userID + "/" + resData.path,
+                    picSrc: util.userData.filePath + "/CAR/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/CAR/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/CAR/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 case "license": //行驶证
                   that.setData({
-                    licenseSrc: 'http://127.0.0.1/upload/LICENSE/' + util.userData.userID + "/" + resData.path,
-                    picSrc: 'http://127.0.0.1/upload/LICENSE/' + util.userData.userID + "/" + resData.path,
+                    licenseSrc: util.userData.filePath + "/LICENSE/" + util.userData.userID + "/" + resData.path,
+                    picSrc: util.userData.filePath + "/LICENSE/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/LICENSE/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/LICENSE/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 case "operation": //营运证
                   that.setData({
-                    operationSrc: 'http://127.0.0.1/upload/OPERATION/' + util.userData.userID + "/" + resData.path,
-                    picSrc: 'http://127.0.0.1/upload/OPERATION/' + util.userData.userID + "/" + resData.path,
+                    operationSrc: util.userData.filePath + "/OPERATION/" + util.userData.userID + "/" + resData.path,
+                    picSrc: util.userData.filePath + "/OPERATION/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/OPERATION/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/OPERATION/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 case "idPositive": //身份证国徽面
                   that.setData({
-                    idPositive: 'http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path,
+                    idPositive: util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 case "idOtherSide": //身份证人像面
                   that.setData({
-                    idOtherSide: 'http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path,
+                    idOtherSide: util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 default:
                   wx.redirectTo({
@@ -459,15 +462,15 @@ Page({
               switch (resData.type) {
                 case "idPositive": //身份证国徽面
                   that.setData({
-                    idPositive: 'http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path,
+                    idPositive: util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 case "idOtherSide": //身份证人像面
                   that.setData({
-                    idOtherSide: 'http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path,
+                    idOtherSide: util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path,
                   });
-                  that.poundPictureRecDistinguish('http://127.0.0.1/upload/ID/' + util.userData.userID + "/" + resData.path, resData.type);
+                  that.poundPictureRecDistinguish(util.userData.filePath + "/ID/" + util.userData.userID + "/" + resData.path, resData.type);
                   break;
                 default:
                   wx.redirectTo({
@@ -546,6 +549,7 @@ Page({
 
   showResultPictureModal() {
     this.setData({
+      picModalShow:false,
       resultModalShow: true,
     });
   },
@@ -591,6 +595,7 @@ Page({
 
   picResultModalClose() {
     this.setData({
+      picModalShow:true,
       resultModalShow: false
     });
   },
@@ -598,8 +603,18 @@ Page({
   picModalClose(e) {
     console.log(e)
     var index = e.detail.index;
-    console
     if (index == 0) {
+      if (util.userData.userType == "1") {
+        this.setData({
+          driver: "block",
+          staff: "none"
+        });
+      } else {
+        this.setData({
+          staff: "block",
+          driver: "none",
+        })
+      }
       switch (this.data.picType) {
         case "head":
           this.setData({
@@ -629,6 +644,7 @@ Page({
           break;
       }
     } else if (index == 1) {
+      
       this.setData({
         picSrc: "",
         picResult: '',
@@ -658,6 +674,17 @@ Page({
           break;
       }
     } else {
+      if (util.userData.userType == "1") {
+        this.setData({
+          driver: "block",
+          staff: "none"
+        });
+      } else {
+        this.setData({
+          staff: "block",
+          driver: "none",
+        })
+      }
       this.setData({
         picSrc: "",
         picResult: '',
@@ -724,10 +751,9 @@ Page({
 
   driverInfoSubmit() {
     var that = this;
-    if (this.data.driverType != "个体司机") {
-      if (this.data.company == "") {
+    console.log(this.data.driverTypeValue)
+    if (this.data.driverType != "个体司机" && this.data.company == "") {
         this.show('请选择所属公司')
-      }
     } else if (this.data.headstockSrc == "") {
       this.show('请上传车牌行驶证照片')
     } else if (this.data.headstock == "") {
@@ -843,5 +869,33 @@ Page({
         }
       })
     }
+  },
+
+  headStockChange(e){
+    var value=e.detail.detail.value
+    this.setData({
+      headstock:value
+    })
+  },
+
+  trailerChange(e) {
+    var value = e.detail.detail.value
+    this.setData({
+      trailer: value
+    })
+  },
+
+  licenseChange(e) {
+    var value = e.detail.detail.value
+    this.setData({
+      license: value
+    })
+  },
+
+  operationChange(e) {
+    var value = e.detail.detail.value
+    this.setData({
+      operation: value
+    })
   },
 })

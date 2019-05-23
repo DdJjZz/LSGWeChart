@@ -17,15 +17,14 @@ Page({
     height_size:"60px",
     current: 'document',
     padding_bottom:'100px',
-    userid:'UID0000002',
-    userType:'2',
     licenseArray: [],
     licenseIndex:0,
     licensePlate:"",
-
+    companyCode:"",
     startDate: util.formatTime(new Date()).split(" ")[0],
 
     goodsArray: [],
+    goodsIndexArray: [],
     goodsIndex: 0,
     goods: "",
 
@@ -38,10 +37,12 @@ Page({
     endDetail: '',
 
     loadAccountArray: [],
+    loadAccountIndexArray: [],
     loadAccountIndex: 0,
     loadAccount: "",
     
     unloadAccountArray: [],
+    unloadAccountIndexArray: [],
     unloadAccountIndex: 0,
     unloadAccount: "",
 
@@ -272,11 +273,12 @@ Page({
         console.log(data);
         if (data.status == 'true') {
           that.setData({
-            licenseArray:data.list
+            licenseArray:data.list,
+            companyCode: data.com_code
           })
 
         } else {
-          that.show("部分信息获取失败，请检查状态");
+          that.show(data.msg);
         }
       },
       fail() {
@@ -306,7 +308,8 @@ Page({
         console.log(data);
         if (data.status == 'true') {
           that.setData({
-            goodsArray: data.list
+            goodsArray: data.list,
+            goodsIndexArray:data.index,
           })
 
         } else {
@@ -341,7 +344,9 @@ Page({
         if (data.status == 'true') {
           that.setData({
             loadAccountArray: data.list,
+            loadAccountIndexArray:data.index,
             unloadAccountArray: data.list,
+            unloadAccountIndexArray: data.index,
           })
 
         } else {
@@ -382,15 +387,16 @@ Page({
           action: 'ReleaseTask',
           body: {
             uid: util.userData.userID,
+            comCode: that.data.companyCode,
             plate: that.data.licensePlate,
             startDate: that.data.startDate,
-            goods:that.data.goods,
+            goods:that.data.goodsIndexArray[that.data.goodsIndex],
             start:that.data.start,
             end:that.data.end,
             startDetail:that.data.startDetail,
             endDetail:that.data.endDetail,
-            loadAccount:that.data.loadAccount,
-            unloadAccount:that.data.unloadAccount,
+            loadAccount:that.data.loadAccountIndexArray[that.data.loadAccountIndex],
+            unloadAccount:that.data.unloadAccountIndexArray[that.data.unloadAccountIndex],
             pound:that.data.pound,
             price:that.data.price
           },
@@ -418,7 +424,7 @@ Page({
               endAddress: "",
               endDetail:"",
               end:[],
-              loadAccount: "",
+              loadAccount: "",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               unloadAccount: "",
               pound: 0,
               price: 0,
@@ -426,7 +432,7 @@ Page({
             });
 
           } else {
-            that.show("部分信息获取失败，请检查状态");
+            that.show(data.msg);
           }
         },
         fail() {
