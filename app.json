@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/choice/index",
     "pages/entry/index",
+    "pages/choice/index",
+    "pages/company/index",
     "pages/detail/index",
-    
     "pages/rele_task/index",
     "pages/task/index",
     "pages/mine/index",

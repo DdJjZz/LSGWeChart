@@ -14,7 +14,7 @@ Page({
     driver: "none",
     staff: "none",
     user_type: "2",
-    driverTypeList: ["个体司机", "集体司机"],
+    driverTypeList: ["个体司机", "公司司机"],
     driverTypeValue: 0,
     driverType: "个体司机",
     companyList: [],

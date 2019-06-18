@@ -98,7 +98,36 @@ Page({
     wx.redirectTo({
       url: '../register/index?type=' + e.currentTarget.dataset.name
     });
-    console.log(e.currentTarget.dataset.name);
+  },
+
+  company(){
+    var that=this;
+    wx.request({
+      url: util.userData.requestUrl,
+      data: {
+        action: 'NewCompany',
+        body:{}
+      },
+      method: "POST",
+      head: {
+        'content-type': 'application/json' // 默认值
+      },
+      success({data}) {
+        console.log(data)
+        if(data.state=='true'){
+          wx.navigateTo({
+            url: '../company/index?company='+data.company
+          });
+        }
+        else{
+          that.show("请检查网络信息")
+        }
+      },
+      fail(res) {
+        that.show("请检查网络信息")
+      }
+    });
+    
   },
 
   userCallbackInfoCheck(resp) {
