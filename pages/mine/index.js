@@ -333,7 +333,7 @@ Page({
                 });
               } else {
                 that.setData({
-                  picSrc: "http://127.0.0.1/upload/CAR/" + that.data.userid + "/" + resData.path
+                  picSrc: util.userData.filePath + "/CAR/" + that.data.userid + "/" + resData.path
                   // picUnloadSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path,
                   // picSrc: "http://47.101.139.189/DJZTest/" + that.data.taskId + "/" + resData.path
                 });
